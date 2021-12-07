@@ -121,21 +121,34 @@ def LeerXml():
 
             
         else:
+            encontrada = False
             for j in range(listaAlbumes.size):
                 
                 if aux.dato.album == aux2.dato.album:
                     
                     aux2.dato.agregarFinal(aux)#esto es la lista auxiliar
-                    aux2.dato.album = aux.dato.album
+                    
                     aux3 = aux2.dato #esta es la lista aux
                     print('xsx', aux3)
-                    aux4 = aux3.primero
-                    print('a2ui',aux3.album) 
+                    aux4 = aux2.dato
+                    aux3 = aux3.primero
+                    encontrada = True
+                    break
+                    #con esto se recorre cada lista album
+                    for k in range(aux4.size):
+                        print(aux3.dato.dato.imagen)
+                        aux3 = aux3.siguiente
                     
                     
-                else:
-
-                    pass
+            if encontrada == False:
+                
+                listaAuxAlbumes = ListaDobleAlbum()
+                listaAuxAlbumes.album = aux.dato.album
+                listaAuxAlbumes.agregarFinal(aux)
+                listaAlbumes.agregarFinal(listaAuxAlbumes)
+                print('se agregó', aux.dato.album)
+    
+            pass
                 
             
             
@@ -145,7 +158,31 @@ def LeerXml():
         
 
         aux = aux.siguiente
-
+    print('*'*25)
+    aux5 = listaAlbumes.primero #Esta es la primera possicion de la lista albumes
+    aux = aux5.dato #Esta es una lista aux de lista de albumes
+    aux = aux.primero #Esta es la primera posicion de la lista aux agregada, ya que tuene
+    #listas de canciones
+    aux6 = aux5.dato
+    # print(aux.dato.dato.nombre) #aux.dato da acceso a la lista aux, .dato da acceso a la lista canciones
+    #.nombre se puede acceder a cualquier atributo
+    #Recorriendo la lista albumes
+    contador = 0
+    for i in range(listaAlbumes.size):
+        contador+=1
+        # print(aux5.dato.album)
+        for j in range(aux6.size):
+            print(aux6.size)
+            print(aux.dato.dato.nombre)
+            aux = aux.siguiente
+        # print(aux.dato.dato.)
+        if contador == listaAlbumes.size:
+            break
+        aux5 = aux5.siguiente
+        aux6 = aux5.dato
+        aux = aux5.dato #Esta es una lista aux de lista de albumes
+        aux = aux.primero
+        
 
 
     pass
