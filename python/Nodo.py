@@ -3,3 +3,8 @@ class Nodo():
         self.dato = dato
         self.siguiente = None
         self.anterior = None
+        
+        self.ruta = None
+        self.imagen = None
+        self.album = None
+        self.artista = None

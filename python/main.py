@@ -8,7 +8,13 @@ from pygame import mixer
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:'
 from tkinter import *
-from ListaDoble import ListaDoble
+from ListaDobleAlbum import ListaDobleAlbum
+from ListaDobleCancion import ListaDobleCancion
+from ListaDobleArtista import ListaDobleArtista
+
+listaAlbumes = ListaDobleAlbum()
+listaCanciones = ListaDobleCancion()
+listaArtistas = ListaDobleArtista()
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir
@@ -59,7 +65,7 @@ def Stop():
     botonReproducir.configure(image=imgPlay)
 
 def LeerXml():
-    global ruta
+    global ruta, listaAlbumes, listaCanciones
     tree = ET.parse("../archivos/1.xml")
     root = tree.getroot()
     for i in range(len(root)):
@@ -67,17 +73,80 @@ def LeerXml():
         nombreCancion = (root[i].attrib) #Por cada iteracion guadar el nombre de cada cancion en un dicc
 
         nombreCancion = nombreCancion["nombre"] #Esto devuelve solo el nombre de la cancion sin la etiqueta
+        listaAuxCanciones = ListaDobleCancion()
+        listaAuxCanciones.agregarInicio(nombreCancion)
+        listaAuxCanciones.nombre = nombreCancion
         #nombre
         #Posicion 0 de la lista es la etiqueta cancion
         # print(root[0][0].text)
-
+        # print(nombreCancion)
         #Recorriendo etiqueta cancion
         for j in range(len(root[0])):
-            print(root[i][j].text)
-        print('*'*20)
+            if root[i][j].tag== 'album':
+                listaAuxCanciones.album = root[i][j].text
+            elif root[i][j].tag == 'ruta':
+                listaAuxCanciones.ruta = root[i][j].text
+            elif root[i][j].tag == 'imagen':
+                listaAuxCanciones.imagen = root[i][j].text
+            elif root[i][j].tag == 'artista':
+                listaAuxCanciones.artista = root[i][j].text
+
+        listaCanciones.agregarFinal(listaAuxCanciones)
+        
+            
+            
+        
+            # print(root[i][j].text)
+        
     
+    # aux = listaCanciones.primero
+    # print(aux.dato.nombre)
+    # aux = aux.siguiente
+    # print(aux.dato.nombre)
+    # aux = aux.siguiente
+    # print(aux.dato.nombre)
+
+    aux = listaCanciones.primero
     
-    
+    for i in range(listaCanciones.size):
+        
+        if listaAlbumes.vacia():
+            listaAuxAlbumes = ListaDobleAlbum()
+            listaAuxAlbumes.album = aux.dato.album
+            listaAuxAlbumes.agregarFinal(aux)
+            listaAlbumes.agregarFinal(listaAuxAlbumes)
+            aux2 = listaAlbumes.primero #aqui esta la lista de la cancion
+            print(aux.dato.nombre, aux.dato.artista)
+            print('xsxs', listaAuxAlbumes)
+
+            
+        else:
+            for j in range(listaAlbumes.size):
+                
+                if aux.dato.album == aux2.dato.album:
+                    
+                    aux2.dato.agregarFinal(aux)#esto es la lista auxiliar
+                    aux2.dato.album = aux.dato.album
+                    aux3 = aux2.dato #esta es la lista aux
+                    print('xsx', aux3)
+                    aux4 = aux3.primero
+                    print('a2ui',aux3.album) 
+                    
+                    
+                else:
+
+                    pass
+                
+            
+            
+                
+
+                
+        
+
+        aux = aux.siguiente
+
+
 
     pass
 
