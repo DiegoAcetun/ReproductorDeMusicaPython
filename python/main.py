@@ -176,14 +176,44 @@ def LeerXml():
             print(aux.dato.dato.nombre)
             aux = aux.siguiente
         # print(aux.dato.dato.)
-        if contador == listaAlbumes.size:
+        if contador == listaAlbumes.size: #Esto es para que no haga una iteración de más
+            #y marque error
             break
         aux5 = aux5.siguiente
         aux6 = aux5.dato
         aux = aux5.dato #Esta es una lista aux de lista de albumes
         aux = aux.primero
+    print('*'*25)  
+    aux = listaAlbumes.primero
+    for i in range(listaAlbumes.size):
         
+        # print(aux.dato.album)
+        if listaArtistas.vacia():
+            listaAuxArtistas = ListaDobleArtista()
+            listaAuxArtistas.agregarFinal(aux)
+            listaAuxArtistas.artista = aux.dato.primero.dato.dato.artista
+            # print('www',listaAuxArtistas.artista)
+            listaArtistas.agregarFinal(listaAuxArtistas)
+            # print(listaArtistas.primero.dato.dato.album)
+        else:
+            encontrada = False
+            auxArtista = listaArtistas.primero
+            
 
+            
+
+            for j in range(listaArtistas.size):
+                for k in range(1): # Tamaño de la lista albumes auxiliares
+                    print('ssss',auxArtista.dato.primero.dato.dato.size) # Tamaño de la lista albumes auxiliares
+                    
+                    print('cancion',auxArtista.dato.primero.dato.dato.primero.dato.dato.nombre)
+                    
+                    print('album', auxArtista.dato.primero.dato.dato.album)
+
+                    print('artista', auxArtista.dato.artista)
+                # if auxArtista.dato.primero.artista == 'a':
+                #     pass
+        aux = aux.siguiente
 
     pass
 

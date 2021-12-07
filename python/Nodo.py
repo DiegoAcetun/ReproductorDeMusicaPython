@@ -4,7 +4,7 @@ class Nodo():
         self.siguiente = None
         self.anterior = None
         
-        self.ruta = None
-        self.imagen = None
-        self.album = None
-        self.artista = None
+        # self.ruta = None
+        # self.imagen = None
+        # self.album = None
+        # self.artista = None
