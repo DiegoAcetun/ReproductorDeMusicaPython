@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 import easygui
+import xml.etree.ElementTree as ET
+
 from pygame import mixer
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:'
@@ -11,7 +13,7 @@ from ListaDoble import ListaDoble
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir
     mixer.init()
-    cancion = '../Musica/HeroesTonight.mp3'
+    cancion = '../Musica/heroes.mp3'
     if reproducir:
         mixer.music.load(cancion)
         mixer.music.set_volume(0.7)
@@ -33,7 +35,7 @@ def Play():
 def Siguiente():
     global cancion
     mixer.music.stop()
-    cancion = '../Musica/Alone.mp3'
+    cancion = '../Musica/alone.mp3'
     mixer.music.load(cancion)
     mixer.music.set_volume(0.7)
     mixer.music.play()
@@ -56,7 +58,28 @@ def Stop():
     reproducir = True
     botonReproducir.configure(image=imgPlay)
 
+def LeerXml():
+    global ruta
+    tree = ET.parse("../archivos/1.xml")
+    root = tree.getroot()
+    for i in range(len(root)):
 
+        nombreCancion = (root[i].attrib) #Por cada iteracion guadar el nombre de cada cancion en un dicc
+
+        nombreCancion = nombreCancion["nombre"] #Esto devuelve solo el nombre de la cancion sin la etiqueta
+        #nombre
+        #Posicion 0 de la lista es la etiqueta cancion
+        # print(root[0][0].text)
+
+        #Recorriendo etiqueta cancion
+        for j in range(len(root[0])):
+            print(root[i][j].text)
+        print('*'*20)
+    
+    
+    
+
+    pass
 
 
 ventana = tk.Tk()
@@ -71,7 +94,7 @@ botonCargar = tk.Button(ventana, text="Seleccionar Archivo", command=Cargar, hei
 botonCargar.pack()
 botonCargar.place(x=25, y=10)
 
-botonRHtml = tk.Button(ventana, text="Reporte HTML", command=Cargar, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRHtml = tk.Button(ventana, text="Reporte HTML", command=LeerXml, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
@@ -98,7 +121,9 @@ imgStop = PhotoImage(file='../Img/stop.png')
 botonStop = tk.Button(ventana, command=Stop, image=imgStop)
 botonStop.pack()
 botonStop.place(x=1300, y=100)
+
 imgPausa = PhotoImage(file=f'../Img/pausa1.png')
+
 
 
 label = tk.Label(ventana, fg='black', bg='thistle', text=txtLabel, font=fuenteLabel)
@@ -106,5 +131,9 @@ label.pack()
 label.place(x=820, y=270, width=600, height=500)
 label.configure(justify="left")
 
-
-ventana.mainloop()
+imgCancion = PhotoImage(file='../Img/alone.png')
+labelImgCancion = tk.Label(ventana, image=imgCancion)
+labelImgCancion.pack()
+labelImgCancion.place(x=500, y=350)
+# ventana.mainloop()
+LeerXml()

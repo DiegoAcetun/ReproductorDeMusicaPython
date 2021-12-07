@@ -1,0 +1,20 @@
+<biblioteca>
+    <cancion nombre="Heroes Tonight">
+        <artista> "BTS" </artista>
+        <album> "O!RUL8,2?"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/heroes.mp3"</ruta>
+    </cancion>
+    <cancion nombre="alone">
+        <artista>"Jimmy Eat World"</artista>
+        <album> "Bleed American"</album>,
+        <imagen> "../Img/alone.png"</imagen>
+        <ruta>"../Musica/alone.mp3"</ruta>
+    </cancion>
+    <cancion nombre="faded">,
+        <artista>"Simple plan"</artista>
+        <album> "Taking One for the Team"</album>,
+        <imagen> "../Img/faded.png"</imagen>
+        <ruta>"../Musica/faded.mp3"</ruta>
+    </cancion>
+</biblioteca>
