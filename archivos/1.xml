@@ -7,7 +7,7 @@
     </cancion>
     <cancion nombre="alone">
         <artista>"Jimmy Eat World"</artista>
-        <album> "O!RUL8,2?"</album>,
+        <album> "O!RUL8,?"</album>,
         <imagen> "../Img/alone.png"</imagen>
         <ruta>"../Musica/alone.mp3"</ruta>
     </cancion>
