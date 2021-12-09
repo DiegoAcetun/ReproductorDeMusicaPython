@@ -147,18 +147,98 @@ def LeerXml():
     #Recorriendo listas albumes
     aux = listaAlbumes.primero
 
-    print(listaAlbumes.size)
+
+    #Aqui solo se obtienen datos, no se crea nada
     while aux!=None:
         aux2 = aux.dato #Esto es la lista album auxiliar
         aux3 = aux.dato.primero
-        print('*'*25)
-        print('Canciones del album', aux.dato.album)
+        # print('*'*25)
+        # print('Canciones del album', aux.dato.album, 'artista', aux.dato.artista) #Aqui se imprime la info
+        #Descomentar para ver
         while aux3 !=None:
-            print(aux3.dato.nombre)
+            # print(aux3.dato.nombre) descomentar para obtener atrib de la cancion
             aux3=aux3.siguiente
 
         # print(aux2.primero.dato.nombre) #Imprimo nombre de la cancion
         aux = aux.siguiente
+
+
+    #Aqui se anidan listasArtista y listaALbum
+    aux = listaAlbumes.primero
+    # print(aux.dato) #esto es un album auxiliar
+    artistaEncontrado = False
+    while aux != None: #Aqui recorro los 5 albumes
+        aux2 = aux.dato #Aqui estan los atributos de cada album
+        aux2 = aux2.artista
+        # print(aux.dato.size)
+        if listaArtistas.vacia():
+            listaAuxArtistas = ListaDobleArtista()
+            listaAuxArtistas.agregarFinal(aux.dato) #aux dato contiene el album a agregar
+            listaAuxArtistas.artista = aux2
+            listaArtistas.agregarFinal(listaAuxArtistas)
+            aux3 = listaArtistas.primero
+
+        else:
+            #aqui recorro las listas artistas
+            while aux3 != None:
+                # print(aux2, aux3.dato) #esta es una lista artista con atributos
+                #Verificamos si ya existe el artista y solo le agregamos el album
+                if aux2 == aux3.dato.artista:
+                    aux3.dato.agregarFinal(aux.dato)
+
+                    artistaEncontrado = True
+                    
+
+                    # print('iguales')
+                    break
+                aux3 = aux3.siguiente
+                    
+                
+            #Si el artista no eciste creamos una nueva instancia
+            if artistaEncontrado == False:
+                listaAuxArtistas = ListaDobleArtista()
+                listaAuxArtistas.agregarFinal(aux.dato) #aux dato contiene el album a agregar
+                listaAuxArtistas.artista = aux2
+                listaArtistas.agregarFinal(listaAuxArtistas)
+            artistaEncontrado = False
+                    
+
+                
+
+
+            
+        
+
+        aux = aux.siguiente
+
+    #Verificando los datos en la lista artista
+    aux = listaArtistas.primero
+    while aux != None:
+        # print('*'*25)
+        print('artista', aux.dato.artista, )
+        # print(aux.dato.primero.dato)
+        aux2 = aux.dato.primero 
+        #Recorremos los albumes del artista
+        while aux2 != None:
+            
+            print('albumes', aux2.dato.album)
+            aux3 = aux2.dato.primero
+            #Recorriendo el album para pbtener las canciones
+            print('CANCIONES')
+            while aux3 != None:
+                print(aux3.dato.nombre)
+                aux3 = aux3.siguiente
+            print('*'*25)
+
+            aux2 = aux2.siguiente
+            print(aux2)
+        
+
+
+        
+        aux = aux.siguiente
+
+    
 
 
 

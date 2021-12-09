@@ -1,20 +1,51 @@
 <biblioteca>
     <cancion nombre="Heroes Tonight">
-        <artista> "BTS" </artista>
-        <album> "O!RUL8,2?"</album>
+        <artista>"artista1" </artista>
+        <album> "album1"</album>
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/heroes.mp3"</ruta>
     </cancion>
     <cancion nombre="alone">
-        <artista>"Jimmy Eat World"</artista>
-        <album> "O!RUL8,2?"</album>,
+        <artista>"artista1"</artista>
+        <album> "album1"</album>,
         <imagen> "../Img/alone.png"</imagen>
         <ruta>"../Musica/alone.mp3"</ruta>
     </cancion>
     <cancion nombre="faded">,
-        <artista>"Simple plan"</artista>
-        <album> "Taking One for the Team"</album>,
+        <artista>"artista2"</artista>
+        <album> "album2"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
+    <cancion nombre="hhh">,
+        <artista>"artista2"</artista>
+        <album> "album2"</album>,
+        <imagen> "../Img/faded.png"</imagen>
+        <ruta>"../Musica/faded.mp3"</ruta>
+    </cancion>
+    <cancion nombre="aaa">,
+        <artista>"artista3"</artista>
+        <album> "album3"</album>,
+        <imagen> "../Img/faded.png"</imagen>
+        <ruta>"../Musica/faded.mp3"</ruta>
+    </cancion>
+    <cancion nombre="eee">,
+        <artista>"artista4"</artista>
+        <album> "album4"</album>,
+        <imagen> "../Img/faded.png"</imagen>
+        <ruta>"../Musica/faded.mp3"</ruta>
+    </cancion>
+    <cancion nombre="rrr">,
+        <artista>"artista1"</artista>
+        <album> "album1"</album>,
+        <imagen> "../Img/faded.png"</imagen>
+        <ruta>"../Musica/faded.mp3"</ruta>
+    </cancion>
+    <cancion nombre="jajaja">,
+        <artista>"artista5"</artista>
+        <album> "album5"</album>,
+        <imagen> "../Img/faded.png"</imagen>
+        <ruta>"../Musica/faded.mp3"</ruta>
+    </cancion>
+
 </biblioteca>
