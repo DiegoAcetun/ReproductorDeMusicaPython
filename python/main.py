@@ -18,7 +18,7 @@ listaAlbumes = ListaDobleAlbum()
 listaCanciones = ListaDobleCancion()
 listaArtistas = ListaDobleArtista()
 listaC = ListaDobleCancion()
-
+listaVar = ListaDoble()
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir
     mixer.init()
@@ -70,11 +70,17 @@ def Stop():
 def obtenerOpcion():
     global var, listaC
     aux = listaC.primero
+    aux2 = listaVar.primero
+    print('*'*25)
+    while aux != None:
+        
+        print(aux.dato.cget('text'), aux2.dato.get())
+        aux = aux.siguiente
+        aux2 = aux2.siguiente
 
-    print(var.get())
 
 def LeerXml():
-    global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC
+    global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
     tree = ET.parse("../archivos/1.xml")
     root = tree.getroot()
     for i in range(len(root)): #root.tag es biblioteca
@@ -264,14 +270,17 @@ def LeerXml():
     posy = 0
     
     while aux != None:
-        var = tk.StringVar()
+        var = tk.BooleanVar()
         # var = aux.dato.nombre
-        opcionCancion = tk.Checkbutton(ventana, text=aux.dato.nombre, variable=var, command=obtenerOpcion)
+        opcionCancion = tk.Checkbutton(ventana, text=aux.dato.nombre, variable=var)
         opcionCancion.pack
-        opcionCancion.place(x=20, y=200+posy)
+        opcionCancion.place(x=20, y=160+posy)
+        listaAux = ListaDoble()
+        listaAux.agregarFinal(opcionCancion)
+        listaVar.agregarFinal(var)
+
         listaC.agregarFinal(opcionCancion)
-        
-        print(opcionCancion.cget('text'))
+        # print(var.get())
         
         posy+=20
         aux = aux.siguiente
@@ -349,6 +358,10 @@ labelImgCancion.place(x=500, y=350)
 labelCanciones = tk.Label(ventana, text='Canciones Disponibles', font=fuente, bg='red', fg = 'white')
 labelCanciones.pack()
 labelCanciones.place(x=20, y =100)
+
+botonCrearListaReproduccion = tk.Button(ventana, command=obtenerOpcion, text='Crear Lista de Reproduccion', font=fuente, bg='midnightblue', fg = 'white', activebackground="powderblue")
+botonCrearListaReproduccion.pack()
+botonCrearListaReproduccion.place(x=20, y=900)
 LeerXml()
 ventana.mainloop()
 # opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)
