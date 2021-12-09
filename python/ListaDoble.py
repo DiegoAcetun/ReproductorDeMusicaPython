@@ -4,6 +4,9 @@ class ListaDoble():
         self.primero = None
         self.ultimo = None
         self.size = 0
+        self.cancion = None
+        self.album = None
+        self.artista = None
 
     def vacia(self):
         return self.primero == None

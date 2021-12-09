@@ -11,6 +11,8 @@ from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
 from ListaDobleArtista import ListaDobleArtista
+from ListaDoble import ListaDoble
+from Cancion import Cancion
 
 listaAlbumes = ListaDobleAlbum()
 listaCanciones = ListaDobleCancion()
@@ -72,9 +74,9 @@ def LeerXml():
         nombreCancion = (root[i].attrib) #Por cada iteracion guadar el nombre de cada cancion en un dicc
                                         #el tag es cancion
         nombreCancion = nombreCancion["nombre"] #Esto devuelve solo el nombre de la cancion sin la etiqueta
-        listaAuxCanciones = ListaDobleCancion()
-        listaAuxCanciones.agregarInicio(nombreCancion)
-        listaAuxCanciones.nombre = nombreCancion
+        nuevaCancion = Cancion()
+        
+        nuevaCancion.nombre = nombreCancion
         #nombre
         #Posicion 0 de la lista es la etiqueta cancion
         # print(root[0][0].text)
@@ -82,15 +84,15 @@ def LeerXml():
         #Recorriendo etiqueta cancion
         for j in range(len(root[0])):
             if root[i][j].tag== 'album':
-                listaAuxCanciones.album = root[i][j].text
+                nuevaCancion.album = root[i][j].text
             elif root[i][j].tag == 'ruta':
-                listaAuxCanciones.ruta = root[i][j].text
+                nuevaCancion.ruta = root[i][j].text
             elif root[i][j].tag == 'imagen':
-                listaAuxCanciones.imagen = root[i][j].text
+                nuevaCancion.imagen = root[i][j].text
             elif root[i][j].tag == 'artista':
-                listaAuxCanciones.artista = root[i][j].text
+                nuevaCancion.artista = root[i][j].text
         
-        listaCanciones.agregarFinal(listaAuxCanciones)
+        listaCanciones.agregarFinal(nuevaCancion)
 
     aux = listaCanciones.primero #Esta es la primera lista aux cancion
     #Recorriendo la lista de canciones
@@ -100,31 +102,65 @@ def LeerXml():
             listaAlbumAux.agregarFinal(aux.dato)
             listaAlbumAux.artista = aux.dato.artista
             listaAlbumAux.album = aux.dato.album
-            # print(listaAlbumAux.primero.dato.nombre) Con esto se accede a los atributos de la lista
-            #de canciones desde la lista aux album
+            # print(aux.dato.album, aux.dato.artista)
+            
             listaAlbumes.agregarFinal(listaAlbumAux)
 
-            print(listaAlbumes.primero.dato.primero.dato.nombre)
+            # print(aux.dato.nombre)
             #seguir creando las listas album cuando ya hay elementos,
             #recorrer la lista 
             aux2 = listaAlbumes.primero
 
         else:
+            albumEncontrado = False
+            # print(aux.dato.album, aux.dato.artista)
+            aux3 = listaAlbumes.primero
+            while aux3 != None:
+                # print(aux3.dato)
+                aux4=aux3.dato #aux4 tiene la lista album aux
+                # print(aux4.primero.dato.nombre) # Esto es el objeto cancion
+                # print(aux4.album)
+                aux3 = aux3.siguiente
+                if aux4.album == aux.dato.album: #Recorremos para ver si el album ya existe
+                    aux4.agregarFinal(aux.dato) #Le agregamos la cancion a ese album
+                    albumEncontrado = True
+                    break
             
-            listaAlbumAux = ListaDobleAlbum()
-            listaAlbumAux.agregarFinal(aux.dato)
-            listaAlbumAux.artista = aux.dato.artista
-            listaAlbumAux.album = aux.dato.album
-            # print(listaAlbumAux.primero.dato.nombre) Con esto se accede a los atributos de la lista
-            #de canciones desde la lista aux album
-            listaAlbumes.agregarFinal(listaAlbumAux)
+            if albumEncontrado:
+                pass
+            else:
+                listaAlbumAux = ListaDobleAlbum()
+                listaAlbumAux.agregarFinal(aux.dato)
+                listaAlbumAux.artista = aux.dato.artista
+                listaAlbumAux.album = aux.dato.album
+                # print(listaAlbumAux.primero.dato.nombre) Con esto se accede a los atributos de la lista
+                #de canciones desde la lista aux album
+                listaAlbumes.agregarFinal(listaAlbumAux)
 
-            print(listaAlbumes.primero.dato.primero.dato.nombre)
+                # print(aux.dato.nombre)
 
 
 
         #print(aux.dato.ruta)#asi se accede a los atrubutos desde el auxiliar
         aux=aux.siguiente
+
+    #Recorriendo listas albumes
+    aux = listaAlbumes.primero
+
+    print(listaAlbumes.size)
+    while aux!=None:
+        aux2 = aux.dato #Esto es la lista album auxiliar
+        aux3 = aux.dato.primero
+        print('*'*25)
+        print('Canciones del album', aux.dato.album)
+        while aux3 !=None:
+            print(aux3.dato.nombre)
+            aux3=aux3.siguiente
+
+        # print(aux2.primero.dato.nombre) #Imprimo nombre de la cancion
+        aux = aux.siguiente
+
+
 
     
         
