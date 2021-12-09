@@ -90,7 +90,7 @@ def LeerXml():
             elif root[i][j].tag == 'imagen':
                 nuevaCancion.imagen = root[i][j].text
             elif root[i][j].tag == 'artista':
-                nuevaCancion.artista = root[i][j].text
+                nuevaCancion.artista = root[i][j].text.strip(' ')
         
         listaCanciones.agregarFinal(nuevaCancion)
 
@@ -180,29 +180,34 @@ def LeerXml():
 
         else:
             #aqui recorro las listas artistas
+            aux3 = listaArtistas.primero
             while aux3 != None:
-                # print(aux2, aux3.dato) #esta es una lista artista con atributos
+                # print(aux2+aux3.dato.artista+'valores') #esta es una lista artista con atributos
                 #Verificamos si ya existe el artista y solo le agregamos el album
+                #aux 3 es lista artista
+                # print(aux2 == aux3.dato.artista, 'comparacion')
                 if aux2 == aux3.dato.artista:
+        
                     aux3.dato.agregarFinal(aux.dato)
 
                     artistaEncontrado = True
                     
 
-                    # print('iguales')
+                    # print('iguales', aux2)
                     break
                 aux3 = aux3.siguiente
                     
                 
-            #Si el artista no eciste creamos una nueva instancia
+            #Si el artista no existe creamos una nueva instancia
             if artistaEncontrado == False:
+                # print('no existe')
                 listaAuxArtistas = ListaDobleArtista()
                 listaAuxArtistas.agregarFinal(aux.dato) #aux dato contiene el album a agregar
                 listaAuxArtistas.artista = aux2
                 listaArtistas.agregarFinal(listaAuxArtistas)
             artistaEncontrado = False
                     
-
+        # print('sxsx')
                 
 
 
@@ -213,25 +218,35 @@ def LeerXml():
 
     #Verificando los datos en la lista artista
     aux = listaArtistas.primero
+    print(listaArtistas.size)
     while aux != None:
-        # print('*'*25)
+        print('*'*25)
         print('artista', aux.dato.artista, )
         # print(aux.dato.primero.dato)
         aux2 = aux.dato.primero 
-        #Recorremos los albumes del artista
+        # aux4 = aux.dato.primero
+        # print('albumes', end='   ')
+        #Recorriendo albumes de los artistas para obtener solo los albumes
+        # while aux4 != None:
+            
+        #     print(aux4.dato.album, end='   ')
+        #     aux4 = aux4.siguiente
+
+
+        #Recorremos los albumes del artista para obtener las canciones
+        
         while aux2 != None:
             
-            print('albumes', aux2.dato.album)
+            print('album', aux2.dato.album)
             aux3 = aux2.dato.primero
             #Recorriendo el album para pbtener las canciones
             print('CANCIONES')
             while aux3 != None:
                 print(aux3.dato.nombre)
                 aux3 = aux3.siguiente
-            print('*'*25)
 
             aux2 = aux2.siguiente
-            print(aux2)
+            # print(aux2)
         
 
 

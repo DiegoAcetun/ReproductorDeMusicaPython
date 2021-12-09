@@ -18,7 +18,7 @@
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
     <cancion nombre="hhh">,
-        <artista>"artista2"</artista>
+        <artista>"artista2"   </artista>
         <album> "album2"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
@@ -36,7 +36,7 @@
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
     <cancion nombre="rrr">,
-        <artista>"artista1"</artista>
+        <artista>"artista1" </artista>
         <album> "album1"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
@@ -47,5 +47,31 @@
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
+    <cancion nombre="ppp">
+        <artista>"artista1" </artista>
+        <album> "album6"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/heroes.mp3"</ruta>
+    </cancion>
+    <cancion nombre="ttt">
+        <artista> "artista2" </artista>
+        <album> "album7"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/heroes.mp3"</ruta>
+    </cancion>
+    <cancion nombre="lll">
+        <artista>"artista1" </artista>
+        <album> "album8"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/heroes.mp3"</ruta>
+    </cancion>
+    <cancion nombre="www">
+        <artista> "artista3" </artista>
+        <album> "album9"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/heroes.mp3"</ruta>
+    </cancion>
+
+
 
 </biblioteca>
