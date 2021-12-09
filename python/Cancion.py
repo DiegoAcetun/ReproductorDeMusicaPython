@@ -5,3 +5,4 @@ class Cancion():
         self.imagen = None
         self.album = None
         self.artista = None
+        self.seleccion = False

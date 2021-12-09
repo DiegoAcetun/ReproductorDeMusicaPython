@@ -17,6 +17,7 @@ from Cancion import Cancion
 listaAlbumes = ListaDobleAlbum()
 listaCanciones = ListaDobleCancion()
 listaArtistas = ListaDobleArtista()
+listaC = ListaDobleCancion()
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir
@@ -66,8 +67,14 @@ def Stop():
     reproducir = True
     botonReproducir.configure(image=imgPlay)
 
+def obtenerOpcion():
+    global var, listaC
+    aux = listaC.primero
+
+    print(var.get())
+
 def LeerXml():
-    global ruta, listaAlbumes, listaCanciones
+    global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC
     tree = ET.parse("../archivos/1.xml")
     root = tree.getroot()
     for i in range(len(root)): #root.tag es biblioteca
@@ -221,7 +228,7 @@ def LeerXml():
     print(listaArtistas.size)
     while aux != None:
         print('*'*25)
-        print('artista', aux.dato.artista, )
+        # print('artista', aux.dato.artista, )
         # print(aux.dato.primero.dato)
         aux2 = aux.dato.primero 
         # aux4 = aux.dato.primero
@@ -237,12 +244,12 @@ def LeerXml():
         
         while aux2 != None:
             
-            print('album', aux2.dato.album)
+            # print('album', aux2.dato.album)
             aux3 = aux2.dato.primero
             #Recorriendo el album para pbtener las canciones
-            print('CANCIONES')
+            # print('CANCIONES')
             while aux3 != None:
-                print(aux3.dato.nombre)
+                # print(aux3.dato.nombre)
                 aux3 = aux3.siguiente
 
             aux2 = aux2.siguiente
@@ -253,7 +260,23 @@ def LeerXml():
         
         aux = aux.siguiente
 
+    aux = listaCanciones.primero
+    posy = 0
     
+    while aux != None:
+        var = tk.StringVar()
+        # var = aux.dato.nombre
+        opcionCancion = tk.Checkbutton(ventana, text=aux.dato.nombre, variable=var, command=obtenerOpcion)
+        opcionCancion.pack
+        opcionCancion.place(x=20, y=200+posy)
+        listaC.agregarFinal(opcionCancion)
+        
+        print(opcionCancion.cget('text'))
+        
+        posy+=20
+        aux = aux.siguiente
+    
+
 
 
 
@@ -261,12 +284,15 @@ def LeerXml():
         
 
     
+
+
     
         
             
 
-
 ventana = tk.Tk()
+var = tk.StringVar()
+
 fuente = tkFont.Font(family="Arial", size=15)
 fuenteLabel = tkFont.Font(family="Arial", size=35)
 
@@ -319,5 +345,18 @@ imgCancion = PhotoImage(file='../Img/alone.png')
 labelImgCancion = tk.Label(ventana, image=imgCancion)
 labelImgCancion.pack()
 labelImgCancion.place(x=500, y=350)
-# ventana.mainloop()
+
+labelCanciones = tk.Label(ventana, text='Canciones Disponibles', font=fuente, bg='red', fg = 'white')
+labelCanciones.pack()
+labelCanciones.place(x=20, y =100)
 LeerXml()
+ventana.mainloop()
+# opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)
+# opcionCancion.pack
+# opcionCancion.place(x=20, y=200)
+
+
+
+
+
+
