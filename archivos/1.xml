@@ -17,59 +17,59 @@
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
-    <cancion nombre="hhh">,
+    <cancion nombre="waka waka">,
         <artista>"artista2"   </artista>
         <album> "album2"</album>,
         <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/faded.mp3"</ruta>
+        <ruta>"../Musica/waka.mp3"</ruta>
     </cancion>
-    <cancion nombre="aaa">,
+    <cancion nombre="Lean on">,
         <artista>"artista3"</artista>
         <album> "album3"</album>,
         <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/faded.mp3"</ruta>
+        <ruta>"../Musica/Lean.mp3"</ruta>
     </cancion>
-    <cancion nombre="eee">,
+    <cancion nombre="lala">,
         <artista>"artista4"</artista>
         <album> "album4"</album>,
         <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/faded.mp3"</ruta>
+        <ruta>"../Musica/lala.mp3"</ruta>
     </cancion>
-    <cancion nombre="rrr">,
+    <cancion nombre="live it up">,
         <artista>"artista1" </artista>
         <album> "album1"</album>,
         <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/faded.mp3"</ruta>
+        <ruta>"../Musica/live.mp3"</ruta>
     </cancion>
-    <cancion nombre="jajaja">,
+    <cancion nombre="Believer">,
         <artista>"artista5"</artista>
         <album> "album5"</album>,
         <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/faded.mp3"</ruta>
+        <ruta>"../Musica/Believer.mp3"</ruta>
     </cancion>
-    <cancion nombre="ppp">
+    <cancion nombre="scream and shout">
         <artista>"artista1" </artista>
         <album> "album6"</album>
         <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/heroes.mp3"</ruta>
+        <ruta>"../Musica/scream.mp3"</ruta>
     </cancion>
-    <cancion nombre="ttt">
+    <cancion nombre="saxobeat">
         <artista> "artista2" </artista>
         <album> "album7"</album>
         <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/heroes.mp3"</ruta>
+        <ruta>"../Musica/saxobeat.mp3"</ruta>
     </cancion>
-    <cancion nombre="lll">
+    <cancion nombre="restos">
         <artista>"artista1" </artista>
         <album> "album8"</album>
         <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/heroes.mp3"</ruta>
+        <ruta>"../Musica/restos.mp3"</ruta>
     </cancion>
-    <cancion nombre="www">
+    <cancion nombre="Cisne">
         <artista> "artista3" </artista>
         <album> "album9"</album>
         <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/heroes.mp3"</ruta>
+        <ruta>"../Musica/cisne.mp3"</ruta>
     </cancion>
 
 

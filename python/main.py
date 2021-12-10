@@ -23,10 +23,15 @@ listaC = ListaDobleCancion()
 listaVar = ListaDoble()
 listasCirculares = ListaDobleCancion()
 listasReproduccion = ListaCircular()
+cancionActual = None
 def Play():
-    global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir
+    global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
+    cancionActual = listasCirculares.primero
+    cancionActual = cancionActual.dato.primero
+    print(cancionActual.dato.ruta)
     mixer.init()
-    cancion = '../Musica/heroes.mp3'
+    cancion = cancionActual.dato.ruta
+    cancion = cancion.replace('"', '')
     if reproducir:
         mixer.music.load(cancion)
         mixer.music.set_volume(0.7)
@@ -46,19 +51,22 @@ def Play():
         pausa = True
 
 def Siguiente():
-    global cancion
+    global cancion, cancionActual
+    cancionActual = cancionActual.siguiente
     mixer.music.stop()
-    cancion = '../Musica/alone.mp3'
+    cancion = cancionActual.dato.ruta
+    cancion = cancion.replace('"', '')
     mixer.music.load(cancion)
     mixer.music.set_volume(0.7)
     mixer.music.play()
     
 
 def Cargar():
-    global ruta, cancion, pausa, botonReproducir, botonPausa, imgPausa
+    global ruta, cancion, pausa, botonReproducir, botonPausa, imgPausa, listasCirculares
     ruta = easygui.fileopenbox()  
     print(ruta)
-    cancion = '../Musica/Alone.mp3'
+    
+    # cancion = '../Musica/Alone.mp3'
 def Pausa(): 
     global pausa, botonPausa, botonReproducir, imgPausa
     mixer.music.pause()
@@ -75,14 +83,16 @@ def recorrerListas():
     global var, listaC, listasReproduccion, listasCirculares
     aux = listasCirculares.primero
     aux2 = aux.dato.primero
+    
     while aux != None:
         while aux2:
+            
+
             print(aux2.dato.nombre) #Estas son las canciones agregadas a la lista de reproduccion
             # print(aux.dato.size)
             if aux2 == aux.dato.ultimo:
                 break
             aux2 = aux2.siguiente
-                
         # print(aux2.dato)
 
         aux = aux.siguiente
