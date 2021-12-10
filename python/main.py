@@ -5,6 +5,8 @@ import easygui
 import xml.etree.ElementTree as ET
 
 from pygame import mixer
+from os import system
+system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:'
 from tkinter import *
@@ -13,12 +15,14 @@ from ListaDobleCancion import ListaDobleCancion
 from ListaDobleArtista import ListaDobleArtista
 from ListaDoble import ListaDoble
 from Cancion import Cancion
-
+from ListaCircular import ListaCircular
 listaAlbumes = ListaDobleAlbum()
 listaCanciones = ListaDobleCancion()
 listaArtistas = ListaDobleArtista()
 listaC = ListaDobleCancion()
 listaVar = ListaDoble()
+listasCirculares = ListaDobleCancion()
+listasReproduccion = ListaCircular()
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir
     mixer.init()
@@ -67,16 +71,45 @@ def Stop():
     reproducir = True
     botonReproducir.configure(image=imgPlay)
 
+def recorrerListas():
+    global var, listaC, listasReproduccion, listasCirculares
+    aux = listasCirculares.primero
+    aux2 = aux.dato.primero
+    while aux != None:
+        while aux2:
+            print(aux2.dato.nombre) #Estas son las canciones agregadas a la lista de reproduccion
+            # print(aux.dato.size)
+            if aux2 == aux.dato.ultimo:
+                break
+            aux2 = aux2.siguiente
+                
+        # print(aux2.dato)
+
+        aux = aux.siguiente
+
 def obtenerOpcion():
-    global var, listaC
+    global var, listaC, listasReproduccion, listasCirculares
     aux = listaC.primero
     aux2 = listaVar.primero
+    aux3 = listaCanciones.primero
     print('*'*25)
+    listasReproduccion = ListaCircular()
     while aux != None:
+        #cget devuelve el nombre de la cancion, dato.get es la lista de varString
+        #Devuelve True o False si esta seleccionada
+
+        # print(aux.dato.cget('text'), aux2.dato.get(), aux3.dato)
+        if aux2.dato.get():
+            listasReproduccion.agregarFinal(aux3.dato) #aux3.dato es un objeto cancion
         
-        print(aux.dato.cget('text'), aux2.dato.get())
+
+            
         aux = aux.siguiente
         aux2 = aux2.siguiente
+        aux3 = aux3.siguiente
+    listasCirculares.agregarFinal(listasReproduccion)
+
+    recorrerListas()
 
 
 def LeerXml():
@@ -268,7 +301,7 @@ def LeerXml():
 
     aux = listaCanciones.primero
     posy = 0
-    
+    #Creamos los checkbox de las canciones
     while aux != None:
         var = tk.BooleanVar()
         # var = aux.dato.nombre

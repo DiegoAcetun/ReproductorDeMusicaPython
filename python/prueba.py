@@ -1,12 +1,13 @@
-contenido = ''
-contenido+='<ListaReproduccion>'
+from ListaCircular import *
+from os import system
+system('clear')
+lista = ListaCircular()
 
-for i in range(5):
-    contenido+='<Lista nombre="milista">'
-    contenido+='<cancion nombre="x">'
+lista.agregarFinal(22)
+lista.agregarFinal(44)
+lista.agregarFinal(25)
+lista.agregarFinal(82)
+lista.agregarFinal(99)
+lista.agregarFinal(4100)
 
-contenido+='</ListaReproduccion>'
-
-archivo = open('nuevo.xml', 'w')
-archivo.write(contenido)
-archivo.close
+lista.recorrerInicio()
