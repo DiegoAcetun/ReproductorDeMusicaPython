@@ -6,3 +6,4 @@ class Cancion():
         self.album = None
         self.artista = None
         self.seleccion = False
+        self.reproducciones = 0

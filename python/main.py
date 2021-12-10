@@ -2,13 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 import easygui
+# from easygui import *
 import xml.etree.ElementTree as ET
 
 from pygame import mixer
 from os import system
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
-reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:'
+reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -24,11 +25,20 @@ listaVar = ListaDoble()
 listasCirculares = ListaDobleCancion()
 listasReproduccion = ListaCircular()
 cancionActual = None
+listaActual = None
+listasReproduccionBox = []
+c=0
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
-    cancionActual = listasCirculares.primero
+    global combo
+    # print(combo.get())
+    
+    cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
+    print(listasCirculares.size)
+    # print(cancionActual.dato)#Esto es una lista circular
     cancionActual = cancionActual.dato.primero
-    print(cancionActual.dato.ruta)
+    # print(cancionActual)
+    # print(cancionActual.dato.ruta)
     mixer.init()
     cancion = cancionActual.dato.ruta
     cancion = cancion.replace('"', '')
@@ -53,6 +63,15 @@ def Play():
 def Siguiente():
     global cancion, cancionActual
     cancionActual = cancionActual.siguiente
+    mixer.music.stop()
+    cancion = cancionActual.dato.ruta
+    cancion = cancion.replace('"', '')
+    mixer.music.load(cancion)
+    mixer.music.set_volume(0.7)
+    mixer.music.play()
+def Anterior():
+    global cancion, cancionActual
+    cancionActual = cancionActual.anterior
     mixer.music.stop()
     cancion = cancionActual.dato.ruta
     cancion = cancion.replace('"', '')
@@ -96,9 +115,9 @@ def recorrerListas():
         # print(aux2.dato)
 
         aux = aux.siguiente
-
+'''aqui se crea la lista de reprodcucición, se obtienen las canciones seleccionadas'''
 def obtenerOpcion():
-    global var, listaC, listasReproduccion, listasCirculares
+    global var, listaC, listasReproduccion, listasCirculares,c, listasReproduccionBox, text
     aux = listaC.primero
     aux2 = listaVar.primero
     aux3 = listaCanciones.primero
@@ -111,15 +130,33 @@ def obtenerOpcion():
         # print(aux.dato.cget('text'), aux2.dato.get(), aux3.dato)
         if aux2.dato.get():
             listasReproduccion.agregarFinal(aux3.dato) #aux3.dato es un objeto cancion
+
         
 
             
         aux = aux.siguiente
         aux2 = aux2.siguiente
         aux3 = aux3.siguiente
+    c+=1
+    listasReproduccion.nombre = text.get(1.0, 'end-1c')
     listasCirculares.agregarFinal(listasReproduccion)
+    listasReproduccionBox.append(listasReproduccion.nombre)
 
-    recorrerListas()
+    combo.configure(values=(listasReproduccionBox))
+
+    text.delete(1.0, 'end-1c')
+
+    
+    '''quitamos la seleccion de los checkbox cada vez que creamos una lista de reproduccion'''
+    
+    aux2 = listaVar.primero #Essta es la variable booleana de los botones
+    while aux2 != None:
+        # print(aux.dato)#Esto es un objeto checkbutton
+        aux2.dato.set(False)
+        
+        aux2 = aux2.siguiente
+
+    # recorrerListas()
 
 
 def LeerXml():
@@ -375,7 +412,7 @@ botonNext.pack()
 botonNext.place(x=1300, y=800)
 
 imgAnterior = PhotoImage(file='../Img/anterior.png')
-botonAnterior = tk.Button(ventana, command=Play, image=imgAnterior)
+botonAnterior = tk.Button(ventana, command=Anterior, image=imgAnterior)
 botonAnterior.pack()
 botonAnterior.place(x=750, y=800)
 
@@ -404,7 +441,23 @@ labelCanciones.place(x=20, y =100)
 
 botonCrearListaReproduccion = tk.Button(ventana, command=obtenerOpcion, text='Crear Lista de Reproduccion', font=fuente, bg='midnightblue', fg = 'white', activebackground="powderblue")
 botonCrearListaReproduccion.pack()
-botonCrearListaReproduccion.place(x=20, y=900)
+botonCrearListaReproduccion.place(x=400, y=900)
+
+LabelCbox = tk.Label(ventana,text='LISTAS DE REPRODUCCION DISPONIBLES', font=fuente)
+LabelCbox.pack()
+LabelCbox.place(x=900, y=25)
+combo = ttk.Combobox(ventana)
+combo.place(x=1000, y=100)
+combo['values'] = (listasReproduccionBox)
+
+labelNombreLista = tk.Label(ventana, text='Nombre de la lista', font=fuente, bg='red', fg = 'white')
+labelNombreLista.pack()
+labelNombreLista.place(x=250, y =800)
+
+text = tk.Text(ventana, font = fuente, width=25, height=1)
+text.pack()
+text.place(x=430, y =800)
+
 LeerXml()
 ventana.mainloop()
 # opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)

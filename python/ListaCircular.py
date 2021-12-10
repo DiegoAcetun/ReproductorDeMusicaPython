@@ -4,6 +4,7 @@ class ListaCircular:
     def __init__(self):
         self.primero = None
         self.ultimo = None
+        self.nombre = None
         self.size = 0
 
     def vacia(self):
