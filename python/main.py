@@ -30,11 +30,21 @@ listasReproduccionBox = []
 c=0
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
-    global combo
+    global combo, listaActual
     # print(combo.get())
     
     cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
-    print(listasCirculares.size)
+    listaActual = listasCirculares.primero
+
+    while listaActual != None:
+        print('sxsx',listaActual.dato.nombre)
+        if listaActual.dato.nombre == combo.get():
+            print(listaActual.dato.nombre, 'es igual a ', combo.get())
+            break
+        listaActual = listaActual.siguiente
+        pass
+    cancionActual = listaActual
+    # print(listasCirculares.size)
     # print(cancionActual.dato)#Esto es una lista circular
     cancionActual = cancionActual.dato.primero
     # print(cancionActual)
