@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 import easygui
-# from easygui import *
+
 import xml.etree.ElementTree as ET
+from tkinter import messagebox
 
 from pygame import mixer
 from os import system
@@ -39,7 +40,7 @@ def Play():
     while listaActual != None:
         print('sxsx',listaActual.dato.nombre)
         if listaActual.dato.nombre == combo.get():
-            print(listaActual.dato.nombre, 'es igual a ', combo.get())
+            # print(listaActual.dato.nombre, 'es igual a ', combo.get())
             break
         listaActual = listaActual.siguiente
         pass
@@ -148,13 +149,23 @@ def obtenerOpcion():
         aux2 = aux2.siguiente
         aux3 = aux3.siguiente
     c+=1
-    listasReproduccion.nombre = text.get(1.0, 'end-1c')
-    listasCirculares.agregarFinal(listasReproduccion)
-    listasReproduccionBox.append(listasReproduccion.nombre)
+    
 
-    combo.configure(values=(listasReproduccionBox))
+    if text.get(1.0, 'end-1c') != '':
+        msj = 'Lista de reproduccion '+ text.get(1.0, 'end-1c')+ ' ha sido creada'
+        messagebox.showinfo(message=msj, title="Título")
+        listasReproduccion.nombre = text.get(1.0, 'end-1c')
+        listasCirculares.agregarFinal(listasReproduccion)
+        listasReproduccionBox.append(listasReproduccion.nombre)
+
+        combo.configure(values=(listasReproduccionBox))
+
+    else:
+        msj = 'Ingrese un nombre para la lista '
+        messagebox.showerror(message=msj, title="Título")
 
     text.delete(1.0, 'end-1c')
+
 
     
     '''quitamos la seleccion de los checkbox cada vez que creamos una lista de reproduccion'''
