@@ -11,6 +11,7 @@ from os import system
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
+Aleatorio = None; pila = []
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -32,6 +33,7 @@ listasReproduccionBox = []
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
     global combo, listaActual, txtLabel, label
+    
     # print(combo.get())
     
     cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
@@ -52,10 +54,13 @@ def Play():
     # print(cancionActual.dato.ruta)
     mixer.init()
     cancion = cancionActual.dato.ruta
-    txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
-    label.config(text=txtLabel)
+    
     cancion = cancion.replace('"', '')
+    
     if reproducir:
+        txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+        label.config(text=txtLabel)
+        cancionActual.dato.reproducciones+=1
         mixer.music.load(cancion)
         mixer.music.set_volume(0.7)
         mixer.music.play()
@@ -74,27 +79,35 @@ def Play():
         pausa = True
 
 def Siguiente():
-    global cancion, cancionActual
-    cancionActual = cancionActual.siguiente
+    global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
     mixer.music.stop()
+    cancionActual = cancionActual.siguiente
+    print(cancionActual.dato.nombre)
     cancion = cancionActual.dato.ruta
     txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
     label.config(text=txtLabel)
+    botonReproducir.configure(image=imgPausa)
     cancion = cancion.replace('"', '')
+    cancionActual.dato.reproducciones+=1
     mixer.music.load(cancion)
     mixer.music.set_volume(0.7)
     mixer.music.play()
+    pausa = False
 def Anterior():
-    global cancion, cancionActual
+    global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
+    mixer.music.stop()
     cancionActual = cancionActual.anterior
     txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
     label.config(text=txtLabel)
+    botonReproducir.configure(image=imgPausa)
+    cancionActual.dato.reproducciones+=1
     mixer.music.stop()
     cancion = cancionActual.dato.ruta
     cancion = cancion.replace('"', '')
     mixer.music.load(cancion)
     mixer.music.set_volume(0.7)
     mixer.music.play()
+    pausa = False
     
 
 def Cargar():
@@ -190,6 +203,10 @@ def obtenerOpcion():
 
     # recorrerListas()
 
+def Pila():
+    #ultimo en agregar primero en salir  
+
+    pass
 
 def LeerXml():
     global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
@@ -209,11 +226,15 @@ def LeerXml():
         #Recorriendo etiqueta cancion
         for j in range(len(root[0])):
             if root[i][j].tag== 'album':
-                nuevaCancion.album = root[i][j].text
+                # print(root[i][j].text)
+                if root[i][j].text.strip(' ')== '':
+                    nuevaCancion.album = 'single'
+                else:
+                    nuevaCancion.album = root[i][j].text.strip(' ')
             elif root[i][j].tag == 'ruta':
-                nuevaCancion.ruta = root[i][j].text
+                nuevaCancion.ruta = root[i][j].text.strip(' ')
             elif root[i][j].tag == 'imagen':
-                nuevaCancion.imagen = root[i][j].text
+                nuevaCancion.imagen = root[i][j].text.strip(' ')
             elif root[i][j].tag == 'artista':
                 nuevaCancion.artista = root[i][j].text.strip(' ')
         
@@ -397,6 +418,67 @@ def LeerXml():
         posy+=20
         aux = aux.siguiente
     
+def ReporteHtml():
+    global listaActual, combo
+    contenido=''
+    titulo = combo.get()
+    titulo = titulo+'.html'
+    # self.textoConsola+='/n'+'REPORTASO'+str(j)            
+    reporte = open(titulo, 'w')
+    
+    title = 'Reporte lista de reporduccion '+ combo.get()
+    celdas = f'''<tr>
+    <th>Cancion</th>
+    <th>Numero de veces reproducida</th>
+    </tr>
+    '''
+    aux = listaActual.dato.primero
+    #tr son filas
+    while aux:
+        print(aux.dato.nombre, aux.dato.reproducciones)
+        
+        celdas+=f'''<tr>
+        <td>{aux.dato.nombre}</td>
+        <td>{aux.dato.reproducciones}</td>   
+        </tr>
+        '''
+
+        aux = aux.siguiente
+        if aux == listaActual.dato.primero:
+            break
+    
+    contenido=(f'''<html>
+    <head>
+    <style type="text/css">
+    table, th, td {{
+    border: 1px solid black;
+        border-collapse: collapse;;
+        }}
+        
+        </style>
+        <title>REPORTE1</title>
+        <body>
+        <h1 style="text-align: center;"> {title} </h1>
+        <table style="margin: 0 auto; width:75%">
+        {celdas}
+        </table>
+    
+    </body>
+    <head>
+    </html>
+    ''')
+    reporte.write(contenido)
+    reporte.close()
+    
+    # print(listaActual.dato) #Esto es uuna lista de reproduccion
+    # print(listaActual.dato.primero.dato)
+
+    # aux = listaActual.dato.primero
+    # while aux:
+    #     print(aux.dato.nombre, aux.dato.reproducciones)
+    #     aux = aux.siguiente
+    #     if aux == listaActual.dato.primero:
+    #         break
 
 
 
@@ -425,7 +507,7 @@ botonCargar = tk.Button(ventana, text="Seleccionar Archivo", command=Cargar, hei
 botonCargar.pack()
 botonCargar.place(x=25, y=10)
 
-botonRHtml = tk.Button(ventana, text="Reporte HTML", command=LeerXml, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRHtml = tk.Button(ventana, text="Reporte HTML", command=ReporteHtml, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
@@ -489,6 +571,11 @@ labelNombreLista.place(x=250, y =800)
 text = tk.Text(ventana, font = fuente, width=25, height=1)
 text.pack()
 text.place(x=430, y =800)
+
+Aleatorio = BooleanVar()
+Aleatorio.set(True)
+RedioButonNormal = tk.Radiobutton(ventana, text='Normal', value=False, font=fuente, variable=Aleatorio, bg='lavender', fg = 'black', activebackground="powderblue").place(x=920, y=850)
+RedioButonAleatorio = tk.Radiobutton(ventana, text='Aleatorio', value=True, font=fuente, variable=Aleatorio, bg='lavender', fg = 'black', activebackground="powderblue").place(x=1100, y=850)
 
 LeerXml()
 ventana.mainloop()

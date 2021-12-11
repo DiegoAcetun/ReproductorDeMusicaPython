@@ -1,7 +1,7 @@
 <biblioteca>
     <cancion nombre="Heroes Tonight">
         <artista>"artista1" </artista>
-        <album> "album1"</album>
+        <album> </album>
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/heroes.mp3"</ruta>
     </cancion>
