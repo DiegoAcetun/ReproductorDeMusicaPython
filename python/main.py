@@ -10,7 +10,7 @@ from pygame import mixer
 from os import system
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
-reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None
+reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -28,17 +28,17 @@ listasReproduccion = ListaCircular()
 cancionActual = None
 listaActual = None
 listasReproduccionBox = []
-c=0
+
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
-    global combo, listaActual
+    global combo, listaActual, txtLabel, label
     # print(combo.get())
     
     cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
     listaActual = listasCirculares.primero
 
     while listaActual != None:
-        print('sxsx',listaActual.dato.nombre)
+        # print('sxsx',listaActual.dato.nombre)
         if listaActual.dato.nombre == combo.get():
             # print(listaActual.dato.nombre, 'es igual a ', combo.get())
             break
@@ -52,6 +52,8 @@ def Play():
     # print(cancionActual.dato.ruta)
     mixer.init()
     cancion = cancionActual.dato.ruta
+    txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+    label.config(text=txtLabel)
     cancion = cancion.replace('"', '')
     if reproducir:
         mixer.music.load(cancion)
@@ -129,10 +131,11 @@ def recorrerListas():
 '''aqui se crea la lista de reprodcucición, se obtienen las canciones seleccionadas'''
 def obtenerOpcion():
     global var, listaC, listasReproduccion, listasCirculares,c, listasReproduccionBox, text
+    contador = 0
     aux = listaC.primero
     aux2 = listaVar.primero
     aux3 = listaCanciones.primero
-    print('*'*25)
+    # print('*'*25)
     listasReproduccion = ListaCircular()
     while aux != None:
         #cget devuelve el nombre de la cancion, dato.get es la lista de varString
@@ -141,24 +144,28 @@ def obtenerOpcion():
         # print(aux.dato.cget('text'), aux2.dato.get(), aux3.dato)
         if aux2.dato.get():
             listasReproduccion.agregarFinal(aux3.dato) #aux3.dato es un objeto cancion
-
+            contador+=1
         
 
             
         aux = aux.siguiente
         aux2 = aux2.siguiente
         aux3 = aux3.siguiente
-    c+=1
+    
     
 
     if text.get(1.0, 'end-1c') != '':
-        msj = 'Lista de reproduccion '+ text.get(1.0, 'end-1c')+ ' ha sido creada'
-        messagebox.showinfo(message=msj, title="Título")
-        listasReproduccion.nombre = text.get(1.0, 'end-1c')
-        listasCirculares.agregarFinal(listasReproduccion)
-        listasReproduccionBox.append(listasReproduccion.nombre)
+        if contador == 0:
+            msj = 'No se ha seleccionado ninguna cancion '
+            messagebox.showerror(message=msj, title="Lista de reproduccion")
+        else:
+            msj = 'Lista de reproduccion '+ text.get(1.0, 'end-1c')+ ' ha sido creada'
+            messagebox.showinfo(message=msj, title="Título")
+            listasReproduccion.nombre = text.get(1.0, 'end-1c')
+            listasCirculares.agregarFinal(listasReproduccion)
+            listasReproduccionBox.append(listasReproduccion.nombre)
 
-        combo.configure(values=(listasReproduccionBox))
+            combo.configure(values=(listasReproduccionBox))
 
     else:
         msj = 'Ingrese un nombre para la lista '
@@ -332,9 +339,9 @@ def LeerXml():
 
     #Verificando los datos en la lista artista
     aux = listaArtistas.primero
-    print(listaArtistas.size)
+    # print(listaArtistas.size)
     while aux != None:
-        print('*'*25)
+        # print('*'*25)
         # print('artista', aux.dato.artista, )
         # print(aux.dato.primero.dato)
         aux2 = aux.dato.primero 
