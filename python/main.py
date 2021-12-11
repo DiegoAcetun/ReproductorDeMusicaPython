@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 import easygui
-
+import random
 import xml.etree.ElementTree as ET
 from tkinter import messagebox
 
@@ -11,7 +11,7 @@ from os import system
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
-Aleatorio = None; pila = []
+Aleatorio = None; pila = []; pilaNombre = []; eliminado = None; bandera = False
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -32,51 +32,100 @@ listasReproduccionBox = []
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
-    global combo, listaActual, txtLabel, label
+    global combo, listaActual, txtLabel, label, Aleatorio, bandera
+    #ultimo en agregar primero en salir  
+    global pila, combo, pilaNombre, eliminado
     
-    # print(combo.get())
-    
-    cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
-    listaActual = listasCirculares.primero
+    if Aleatorio.get():
+        aux = 0
+    # posicion 0 es el nombre de la lista,  posicon 1 nombre de la cancion
+    # print(pila[0][0], pila[0][1].nombre)
+    # print('largo', len(pilaNombre), len(pila))
+        for i in range(len(pilaNombre)):
+            if combo.get() == pilaNombre[i]:
+                # print(pilaNombre[i])
+                aux = i
+                break
+        if bandera:
+            pila[i].append(eliminado)
+        actual = random.randint(0, len(pila[i])-1)
+        print(actual, 'actual')
+        eliminado = pila[i][actual]
+        pila[i].pop(actual)
+        bandera = True
 
-    while listaActual != None:
-        # print('sxsx',listaActual.dato.nombre)
-        if listaActual.dato.nombre == combo.get():
-            # print(listaActual.dato.nombre, 'es igual a ', combo.get())
-            break
-        listaActual = listaActual.siguiente
-        pass
-    cancionActual = listaActual
-    # print(listasCirculares.size)
-    # print(cancionActual.dato)#Esto es una lista circular
-    cancionActual = cancionActual.dato.primero
-    # print(cancionActual)
-    # print(cancionActual.dato.ruta)
-    mixer.init()
-    cancion = cancionActual.dato.ruta
-    
-    cancion = cancion.replace('"', '')
-    
-    if reproducir:
-        txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
-        label.config(text=txtLabel)
-        cancionActual.dato.reproducciones+=1
-        mixer.music.load(cancion)
-        mixer.music.set_volume(0.7)
-        mixer.music.play()
-        reproducir = False
-        botonReproducir.configure(image=imgPausa)
-        return
-    if pausa:
-        mixer.music.unpause()
-        botonReproducir.configure(image=imgPausa)
-        # botonReproducir.image = imgPausa
-        pausa = False
+        
+
+        for j in range(len(pila[i])):
+            print('cancion', pila[i][j].nombre, 'reproducida', pila[i][j].reproducciones, 'veces')
+            # print(random.randint(0, len(pila[i])-1))
+        mixer.init()
+        cancion = eliminado.ruta
+        cancion = cancion.replace('"', '')
+        if reproducir:
+            txtLabel = f'Cancion: {eliminado.nombre} \n Artista: {eliminado.artista} \n Album: {eliminado.album}'
+            label.config(text=txtLabel)
+            eliminado.reproducciones+=1
+            mixer.music.load(cancion)
+            mixer.music.set_volume(0.7)
+            mixer.music.play()
+            reproducir = False
+            botonReproducir.configure(image=imgPausa)
+            return
+        if pausa:
+            mixer.music.unpause()
+            botonReproducir.configure(image=imgPausa)
+            # botonReproducir.image = imgPausa
+            pausa = False
+        else:
+            mixer.music.pause()
+            botonReproducir.configure(image=imgPlay)
+            # botonReproducir.image = imgPausa
+            pausa = True
+        
     else:
-        mixer.music.pause()
-        botonReproducir.configure(image=imgPlay)
-        # botonReproducir.image = imgPausa
-        pausa = True
+    
+        cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
+        listaActual = listasCirculares.primero
+
+        while listaActual != None:
+            # print('sxsx',listaActual.dato.nombre)
+            if listaActual.dato.nombre == combo.get():
+                # print(listaActual.dato.nombre, 'es igual a ', combo.get())
+                break
+            listaActual = listaActual.siguiente
+            pass
+        cancionActual = listaActual
+        # print(listasCirculares.size)
+        # print(cancionActual.dato)#Esto es una lista circular
+        cancionActual = cancionActual.dato.primero
+        # print(cancionActual)
+        # print(cancionActual.dato.ruta)
+        mixer.init()
+        cancion = cancionActual.dato.ruta
+        
+        cancion = cancion.replace('"', '')
+        
+        if reproducir:
+            txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+            label.config(text=txtLabel)
+            cancionActual.dato.reproducciones+=1
+            mixer.music.load(cancion)
+            mixer.music.set_volume(0.7)
+            mixer.music.play()
+            reproducir = False
+            botonReproducir.configure(image=imgPausa)
+            return
+        if pausa:
+            mixer.music.unpause()
+            botonReproducir.configure(image=imgPausa)
+            # botonReproducir.image = imgPausa
+            pausa = False
+        else:
+            mixer.music.pause()
+            botonReproducir.configure(image=imgPlay)
+            # botonReproducir.image = imgPausa
+            pausa = True
 
 def Siguiente():
     global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
@@ -148,12 +197,15 @@ def recorrerListas():
 '''aqui se crea la lista de reprodcucición, se obtienen las canciones seleccionadas'''
 def obtenerOpcion():
     global var, listaC, listasReproduccion, listasCirculares,c, listasReproduccionBox, text
+    global pila, pilaNombre
     contador = 0
     aux = listaC.primero
     aux2 = listaVar.primero
     aux3 = listaCanciones.primero
     # print('*'*25)
     listasReproduccion = ListaCircular()
+    pilaAux = []
+
     while aux != None:
         #cget devuelve el nombre de la cancion, dato.get es la lista de varString
         #Devuelve True o False si esta seleccionada
@@ -161,6 +213,8 @@ def obtenerOpcion():
         # print(aux.dato.cget('text'), aux2.dato.get(), aux3.dato)
         if aux2.dato.get():
             listasReproduccion.agregarFinal(aux3.dato) #aux3.dato es un objeto cancion
+
+            pilaAux.append(aux3.dato)
             contador+=1
         
 
@@ -181,6 +235,11 @@ def obtenerOpcion():
             listasReproduccion.nombre = text.get(1.0, 'end-1c')
             listasCirculares.agregarFinal(listasReproduccion)
             listasReproduccionBox.append(listasReproduccion.nombre)
+            pila.append(pilaAux[:])
+            pilaNombre.append(text.get(1.0, 'end-1c'))
+
+
+            
 
             combo.configure(values=(listasReproduccionBox))
 
@@ -205,7 +264,26 @@ def obtenerOpcion():
 
 def Pila():
     #ultimo en agregar primero en salir  
+    global pila, combo, pilaNombre
+    aux = 0
+    # posicion 0 es el nombre de la lista,  posicon 1 nombre de la cancion
+    # print(pila[0][0], pila[0][1].nombre)
+    # print('largo', len(pilaNombre), len(pila))
+    for i in range(len(pilaNombre)):
+        if combo.get() == pilaNombre[i]:
+            print(pilaNombre[i])
+            aux = i
+            break
+    actual = random.randint(0, len(pila[i])-1)
+    print(actual, 'actual')
+    eliminado = pila[i][actual]
+    pila[i].pop(actual)
 
+    for j in range(len(pila[i])):
+        print('cancion', pila[i][j].nombre, 'reproducida', pila[i][j].reproducciones, 'veces')
+        # print(random.randint(0, len(pila[i])-1))
+    
+    
     pass
 
 def LeerXml():
@@ -511,7 +589,7 @@ botonRHtml = tk.Button(ventana, text="Reporte HTML", command=ReporteHtml, height
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
-botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Cargar, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Pila, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRGraphviz.pack()
 botonRGraphviz.place(x=475, y=10)
 
@@ -573,7 +651,7 @@ text.pack()
 text.place(x=430, y =800)
 
 Aleatorio = BooleanVar()
-Aleatorio.set(True)
+Aleatorio.set(False)
 RedioButonNormal = tk.Radiobutton(ventana, text='Normal', value=False, font=fuente, variable=Aleatorio, bg='lavender', fg = 'black', activebackground="powderblue").place(x=920, y=850)
 RedioButonAleatorio = tk.Radiobutton(ventana, text='Aleatorio', value=True, font=fuente, variable=Aleatorio, bg='lavender', fg = 'black', activebackground="powderblue").place(x=1100, y=850)
 
