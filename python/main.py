@@ -78,6 +78,8 @@ def Siguiente():
     cancionActual = cancionActual.siguiente
     mixer.music.stop()
     cancion = cancionActual.dato.ruta
+    txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+    label.config(text=txtLabel)
     cancion = cancion.replace('"', '')
     mixer.music.load(cancion)
     mixer.music.set_volume(0.7)
@@ -85,6 +87,8 @@ def Siguiente():
 def Anterior():
     global cancion, cancionActual
     cancionActual = cancionActual.anterior
+    txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+    label.config(text=txtLabel)
     mixer.music.stop()
     cancion = cancionActual.dato.ruta
     cancion = cancion.replace('"', '')
