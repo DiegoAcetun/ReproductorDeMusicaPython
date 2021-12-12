@@ -12,7 +12,7 @@ system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
 Aleatorio = None; pila = []; pilaNombre = []; eliminado = None; bandera = False; posicionPila=0
-auxEliminado = None
+auxEliminado = None; imgCancion = None; labelImgCancion=None
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -33,7 +33,7 @@ listasReproduccionBox = []
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
-    global combo, listaActual, txtLabel, label, Aleatorio, bandera, posicionPila
+    global combo, listaActual, txtLabel, label, Aleatorio, bandera, posicionPila, imgCancion, labelImgCancion
     #ultimo en agregar primero en salir  
     global pila, combo, pilaNombre, eliminado
     
@@ -71,6 +71,9 @@ def Play():
             mixer.music.play()
             reproducir = False
             botonReproducir.configure(image=imgPausa)
+            imgCancion = PhotoImage(file=eliminado.imagen.replace('"',''))
+            labelImgCancion.config(image=imgCancion)
+
             return
         if pausa:
             mixer.music.unpause()
@@ -130,6 +133,7 @@ def Play():
 def Siguiente():
     global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
     global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado
+    global imgCancion, labelImgCancion
     mixer.music.stop()
     
     if Aleatorio.get():
@@ -155,6 +159,8 @@ def Siguiente():
         mixer.music.set_volume(0.7)
         mixer.music.play()
         pausa = False
+        imgCancion = PhotoImage(file=eliminado.imagen.replace('"',''))
+        labelImgCancion.config(image=imgCancion)
 
         
     else:
@@ -171,7 +177,7 @@ def Siguiente():
         mixer.music.play()
         pausa = False
 def Anterior():
-    global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
+    global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa, imgCancion, labelImgCancion
     mixer.music.stop()
     global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado
     if Aleatorio.get():
@@ -189,6 +195,8 @@ def Anterior():
         mixer.music.set_volume(0.7)
         mixer.music.play()
         pausa = False
+        imgCancion = PhotoImage(file=auxEliminado.imagen.replace('"',''))
+        labelImgCancion.config(image=imgCancion)
 
         auxEliminado = eliminado
         eliminado = pila[posicionPila].pop()
@@ -196,7 +204,7 @@ def Anterior():
         
         bandera = True
         
-        print('aux', auxEliminado.nombre, 'el', eliminado.nombre)
+        # print('aux', auxEliminado.nombre, 'el', eliminado.nombre)
 
     else:
         cancionActual = cancionActual.anterior
