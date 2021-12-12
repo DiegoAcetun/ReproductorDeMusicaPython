@@ -11,7 +11,8 @@ from os import system
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
-Aleatorio = None; pila = []; pilaNombre = []; eliminado = None; bandera = False
+Aleatorio = None; pila = []; pilaNombre = []; eliminado = None; bandera = False; posicionPila=0
+auxEliminado = None
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -32,37 +33,36 @@ listasReproduccionBox = []
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
-    global combo, listaActual, txtLabel, label, Aleatorio, bandera
+    global combo, listaActual, txtLabel, label, Aleatorio, bandera, posicionPila
     #ultimo en agregar primero en salir  
     global pila, combo, pilaNombre, eliminado
     
     if Aleatorio.get():
-        aux = 0
-    # posicion 0 es el nombre de la lista,  posicon 1 nombre de la cancion
-    # print(pila[0][0], pila[0][1].nombre)
-    # print('largo', len(pilaNombre), len(pila))
-        for i in range(len(pilaNombre)):
-            if combo.get() == pilaNombre[i]:
-                # print(pilaNombre[i])
-                aux = i
-                break
-        if bandera:
-            pila[i].append(eliminado)
-        actual = random.randint(0, len(pila[i])-1)
-        print(actual, 'actual')
-        eliminado = pila[i][actual]
-        pila[i].pop(actual)
-        bandera = True
-
         
-
-        for j in range(len(pila[i])):
-            print('cancion', pila[i][j].nombre, 'reproducida', pila[i][j].reproducciones, 'veces')
-            # print(random.randint(0, len(pila[i])-1))
-        mixer.init()
-        cancion = eliminado.ruta
-        cancion = cancion.replace('"', '')
+    
         if reproducir:
+                # posicion 0 es el nombre de la lista,  posicon 1 nombre de la cancion
+        # print(pila[0][0], pila[0][1].nombre)
+        # print('largo', len(pilaNombre), len(pila))
+            for i in range(len(pilaNombre)):
+                if combo.get() == pilaNombre[i]:
+                    # print(pilaNombre[i])
+                    posicionPila = i
+                    break
+            actual = random.randint(0, len(pila[posicionPila])-1)
+            # print(actual, 'actual')
+            eliminado = pila[posicionPila][actual]
+            pila[posicionPila].pop(actual)
+    
+
+            
+
+            # for j in range(len(pila[posicionPila])):
+            #     print('cancion', pila[i][j].nombre, 'reproducida', pila[i][j].reproducciones, 'veces')
+            #     # print(random.randint(0, len(pila[i])-1))
+            mixer.init()
+            cancion = eliminado.ruta
+            cancion = cancion.replace('"', '')
             txtLabel = f'Cancion: {eliminado.nombre} \n Artista: {eliminado.artista} \n Album: {eliminado.album}'
             label.config(text=txtLabel)
             eliminado.reproducciones+=1
@@ -129,34 +129,88 @@ def Play():
 
 def Siguiente():
     global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
+    global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado
     mixer.music.stop()
-    cancionActual = cancionActual.siguiente
-    print(cancionActual.dato.nombre)
-    cancion = cancionActual.dato.ruta
-    txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
-    label.config(text=txtLabel)
-    botonReproducir.configure(image=imgPausa)
-    cancion = cancion.replace('"', '')
-    cancionActual.dato.reproducciones+=1
-    mixer.music.load(cancion)
-    mixer.music.set_volume(0.7)
-    mixer.music.play()
-    pausa = False
+    
+    if Aleatorio.get():
+        actual = random.randint(0, len(pila[posicionPila])-1)
+        # print(actual, 'actual')
+        auxEliminado = eliminado
+        eliminado = pila[posicionPila][actual]
+        pila[posicionPila].pop(actual)
+        bandera = True
+        pila[posicionPila].append(auxEliminado)
+        print('aux', auxEliminado.nombre, 'el', eliminado.nombre)
+
+
+        
+        # print(cancionActual.dato.nombre)
+        cancion = eliminado.ruta
+        txtLabel = f'Cancion: {eliminado.nombre} \n Artista: {eliminado.artista} \n Album: {eliminado.album}'
+        label.config(text=txtLabel)
+        botonReproducir.configure(image=imgPausa)
+        cancion = cancion.replace('"', '')
+        eliminado.reproducciones+=1
+        mixer.music.load(cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        pausa = False
+
+        
+    else:
+        cancionActual = cancionActual.siguiente
+        print(cancionActual.dato.nombre)
+        cancion = cancionActual.dato.ruta
+        txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+        label.config(text=txtLabel)
+        botonReproducir.configure(image=imgPausa)
+        cancion = cancion.replace('"', '')
+        cancionActual.dato.reproducciones+=1
+        mixer.music.load(cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        pausa = False
 def Anterior():
     global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
     mixer.music.stop()
-    cancionActual = cancionActual.anterior
-    txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
-    label.config(text=txtLabel)
-    botonReproducir.configure(image=imgPausa)
-    cancionActual.dato.reproducciones+=1
-    mixer.music.stop()
-    cancion = cancionActual.dato.ruta
-    cancion = cancion.replace('"', '')
-    mixer.music.load(cancion)
-    mixer.music.set_volume(0.7)
-    mixer.music.play()
-    pausa = False
+    global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado
+    if Aleatorio.get():
+
+
+        
+        # print(cancionActual.dato.nombre)
+        cancion = auxEliminado.ruta
+        txtLabel = f'Cancion: {auxEliminado.nombre} \n Artista: {auxEliminado.artista} \n Album: {auxEliminado.album}'
+        label.config(text=txtLabel)
+        botonReproducir.configure(image=imgPausa)
+        cancion = cancion.replace('"', '')
+        auxEliminado.reproducciones+=1
+        mixer.music.load(cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        pausa = False
+
+        auxEliminado = eliminado
+        eliminado = pila[posicionPila].pop()
+        pila[posicionPila].append(auxEliminado)
+        
+        bandera = True
+        
+        print('aux', auxEliminado.nombre, 'el', eliminado.nombre)
+
+    else:
+        cancionActual = cancionActual.anterior
+        txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+        label.config(text=txtLabel)
+        botonReproducir.configure(image=imgPausa)
+        cancionActual.dato.reproducciones+=1
+        mixer.music.stop()
+        cancion = cancionActual.dato.ruta
+        cancion = cancion.replace('"', '')
+        mixer.music.load(cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        pausa = False
     
 
 def Cargar():

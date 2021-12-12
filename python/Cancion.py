@@ -7,3 +7,4 @@ class Cancion():
         self.artista = None
         self.seleccion = False
         self.reproducciones = 0
+        self.numero = 0
