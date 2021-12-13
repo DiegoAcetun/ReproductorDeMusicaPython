@@ -1,0 +1,34 @@
+<ListasReproducción> 
+   <Lista nombre=a>
+   <cancion nombre=Heroes Tonight>
+       <artista> "artista1" </artista>
+       <album> single </album>
+       <vecesReproducidas> 2 </vecesReproducidas>
+       <imagen> "../Img/heroes.png" </imagen>
+       <ruta> "../Musica/heroes.mp3" </ruta>
+   </cancion>
+   <cancion nombre=alone>
+       <artista> "artista1" </artista>
+       <album> "album1" </album>
+       <vecesReproducidas> 2 </vecesReproducidas>
+       <imagen> "../Img/alone.png" </imagen>
+       <ruta> "../Musica/alone.mp3" </ruta>
+   </cancion>
+    </Lista>
+   <Lista nombre=aaa>
+   <cancion nombre=Heroes Tonight>
+       <artista> "artista1" </artista>
+       <album> single </album>
+       <vecesReproducidas> 1 </vecesReproducidas>
+       <imagen> "../Img/heroes.png" </imagen>
+       <ruta> "../Musica/heroes.mp3" </ruta>
+   </cancion>
+   <cancion nombre=alone>
+       <artista> "artista1" </artista>
+       <album> "album1" </album>
+       <vecesReproducidas> 1 </vecesReproducidas>
+       <imagen> "../Img/alone.png" </imagen>
+       <ruta> "../Musica/alone.mp3" </ruta>
+   </cancion>
+    </Lista>
+</ListasReproduccion>

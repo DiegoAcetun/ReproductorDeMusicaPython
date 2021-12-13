@@ -65,10 +65,10 @@ def Play():
             cancion = cancion.replace('"', '')
             txtLabel = f'Cancion: {eliminado.nombre} \n Artista: {eliminado.artista} \n Album: {eliminado.album}'
             label.config(text=txtLabel)
-            eliminado.reproducciones+=1
             mixer.music.load(cancion)
             mixer.music.set_volume(0.7)
             mixer.music.play()
+            eliminado.reproducciones+=1
             reproducir = False
             botonReproducir.configure(image=imgPausa)
             imgCancion = PhotoImage(file=eliminado.imagen.replace('"',''))
@@ -91,17 +91,17 @@ def Play():
         cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
         listaActual = listasCirculares.primero
 
-        while listaActual != None:
+        while cancionActual != None:
             # print('sxsx',listaActual.dato.nombre)
-            if listaActual.dato.nombre == combo.get():
+            if cancionActual.dato.nombre == combo.get(): #Este es el nombre de la lista seleccionada
                 # print(listaActual.dato.nombre, 'es igual a ', combo.get())
                 break
-            listaActual = listaActual.siguiente
+            cancionActual = cancionActual.siguiente
             pass
-        cancionActual = listaActual
+        
         # print(listasCirculares.size)
         # print(cancionActual.dato)#Esto es una lista circular
-        cancionActual = cancionActual.dato.primero
+        cancionActual = cancionActual.dato.primero #Esta es la primera cancion de  la lista
         # print(cancionActual)
         # print(cancionActual.dato.ruta)
         mixer.init()
@@ -274,9 +274,21 @@ def obtenerOpcion():
 
         # print(aux.dato.cget('text'), aux2.dato.get(), aux3.dato)
         if aux2.dato.get():
-            listasReproduccion.agregarFinal(aux3.dato) #aux3.dato es un objeto cancion
+            
+            objetoCancion = Cancion()
+            objetoCancion.nombre = aux3.dato.nombre
+            objetoCancion.ruta = aux3.dato.ruta
+            objetoCancion.imagen = aux3.dato.imagen
+            objetoCancion.artista = aux3.dato.artista
+            objetoCancion.album = aux3.dato.album
 
-            pilaAux.append(aux3.dato)
+
+
+
+            
+            listasReproduccion.agregarFinal(objetoCancion) #aux3.dato es un objeto cancion
+
+            pilaAux.append(objetoCancion)
             contador+=1
         
 
@@ -337,7 +349,7 @@ def Pila():
             aux = i
             break
     actual = random.randint(0, len(pila[i])-1)
-    print(actual, 'actual')
+    
     eliminado = pila[i][actual]
     pila[i].pop(actual)
 
@@ -559,8 +571,18 @@ def LeerXml():
         aux = aux.siguiente
     
 def ReporteHtml():
-    global listaActual, combo
+    global listaActual, combo, listasCirculares
     contenido=''
+    listaActual = listasCirculares.primero
+
+    while listaActual != None:
+        # print('sxsx',listaActual.dato.nombre)
+        if listaActual.dato.nombre == combo.get():
+            # print(listaActual.dato.nombre, 'es igual a ', combo.get())
+            break
+        listaActual = listaActual.siguiente
+
+    
     titulo = combo.get()
     titulo = titulo+'.html'
     # self.textoConsola+='/n'+'REPORTASO'+str(j)            
@@ -569,17 +591,26 @@ def ReporteHtml():
     title = 'Reporte lista de reporduccion '+ combo.get()
     celdas = f'''<tr>
     <th>Cancion</th>
+    <th>Album</th>
+    <th>Artista</th>
     <th>Numero de veces reproducida</th>
     </tr>
     '''
+    
+
+        
     aux = listaActual.dato.primero
+    
     #tr son filas
     while aux:
         print(aux.dato.nombre, aux.dato.reproducciones)
         
         celdas+=f'''<tr>
         <td>{aux.dato.nombre}</td>
+        <td>{aux.dato.album}</td>   
+        <td>{aux.dato.artista}</td>   
         <td>{aux.dato.reproducciones}</td>   
+
         </tr>
         '''
 
@@ -609,6 +640,10 @@ def ReporteHtml():
     ''')
     reporte.write(contenido)
     reporte.close()
+    msj = 'Reporte HTML generado'
+    messagebox.showinfo(message=msj, title="HTML")
+
+    
     
     # print(listaActual.dato) #Esto es uuna lista de reproduccion
     # print(listaActual.dato.primero.dato)
@@ -621,7 +656,46 @@ def ReporteHtml():
     #         break
 
 
+def generarXml():
+    global listasCirculares, listasReproduccion
+    titulo = 'listasReproduccion.xml'
+    reporte = open(titulo, 'w')
+    contenido = '<ListasReproducción> \n'
+    c=0
+    aux = listasCirculares.primero #Esta es la primera lista de reproduccion
+    # print(aux.dato)
+    # print(aux2, '2')
+    # print(aux.dato.primero, '1')
+    #Recorriendo las listas de reproduccion
+    while aux !=None:
+        aux2 = aux.dato.primero #Esta es la primera cancion
 
+        contenido+=f'   <Lista nombre={aux.dato.nombre}>\n'
+        print('w1')
+        c+=1
+        while aux2:
+            print('w2', c)
+            contenido+=f'   <cancion nombre={aux2.dato.nombre}>\n'
+            contenido+=f'       <artista> {aux2.dato.artista} </artista>\n'
+            contenido+=f'       <album> {aux2.dato.album} </album>\n'
+            contenido+=f'       <vecesReproducidas> {aux2.dato.reproducciones} </vecesReproducidas>\n'
+            contenido+=f'       <imagen> {aux2.dato.imagen} </imagen>\n'
+            contenido+=f'       <ruta> {aux2.dato.ruta} </ruta>\n'
+            contenido+=f'   </cancion>\n'
+
+
+
+            aux2 = aux2.siguiente
+            if aux2 == aux.dato.primero:
+                break
+        contenido+='    </Lista>\n'
+        aux = aux.siguiente
+    
+    contenido+='</ListasReproduccion>\n'
+    reporte.write(contenido)
+    reporte.close()
+    msj = 'Archivo xml generado'
+    messagebox.showinfo(message=msj, title="xml")
 
     
         
@@ -716,6 +790,10 @@ Aleatorio = BooleanVar()
 Aleatorio.set(False)
 RedioButonNormal = tk.Radiobutton(ventana, text='Normal', value=False, font=fuente, variable=Aleatorio, bg='lavender', fg = 'black', activebackground="powderblue").place(x=920, y=850)
 RedioButonAleatorio = tk.Radiobutton(ventana, text='Aleatorio', value=True, font=fuente, variable=Aleatorio, bg='lavender', fg = 'black', activebackground="powderblue").place(x=1100, y=850)
+
+botonCargar = tk.Button(ventana, text="Exportar listas", command=generarXml, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonCargar.pack()
+botonCargar.place(x=700, y=10)
 
 LeerXml()
 ventana.mainloop()
