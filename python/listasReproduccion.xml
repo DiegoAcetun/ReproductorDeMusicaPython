@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ListasReproducción> 
-   <Lista nombre=u>
-   <cancion nombre=Heroes Tonight>
+<ListasReproducción>
+   <Lista nombre="ttt">
+   <cancion nombre="Heroes Tonight">
        <artista> "artista1" </artista>
        <album> single </album>
        <vecesReproducidas> 2 </vecesReproducidas>
        <imagen> "../Img/heroes.png" </imagen>
        <ruta> "../Musica/heroes.mp3" </ruta>
    </cancion>
-   <cancion nombre=alone>
+   <cancion nombre="alone">
        <artista> "artista1" </artista>
        <album> "album1" </album>
        <vecesReproducidas> 2 </vecesReproducidas>
        <imagen> "../Img/alone.png" </imagen>
        <ruta> "../Musica/alone.mp3" </ruta>
    </cancion>
+   <cancion nombre="faded">
+       <artista> "artista2" </artista>
+       <album> "album2" </album>
+       <vecesReproducidas> 2 </vecesReproducidas>
+       <imagen> "../Img/faded.png" </imagen>
+       <ruta> "../Musica/faded.mp3" </ruta>
+   </cancion>
+   <cancion nombre="waka waka">
+       <artista> "artista2" </artista>
+       <album> "album2" </album>
+       <vecesReproducidas> 2 </vecesReproducidas>
+       <imagen> "../Img/faded.png" </imagen>
+       <ruta> "../Musica/waka.mp3" </ruta>
+   </cancion>
+   <cancion nombre="Lean on">
+       <artista> "artista3" </artista>
+       <album> "album3" </album>
+       <vecesReproducidas> 2 </vecesReproducidas>
+       <imagen> "../Img/faded.png" </imagen>
+       <ruta> "../Musica/Lean.mp3" </ruta>
+   </cancion>
+   <cancion nombre="lala">
+       <artista> "artista4" </artista>
+       <album> "album4" </album>
+       <vecesReproducidas> 1 </vecesReproducidas>
+       <imagen> "../Img/faded.png" </imagen>
+       <ruta> "../Musica/lala.mp3" </ruta>
+   </cancion>
     </Lista>
-</ListasReproduccion>
+</ListasReproducción>
