@@ -364,6 +364,7 @@ def LeerXml():
     global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
     tree = ET.parse("../archivos/1.xml")
     root = tree.getroot()
+    print(root)
     for i in range(len(root)): #root.tag es biblioteca
         nombreCancion = (root[i].attrib) #Por cada iteracion guadar el nombre de cada cancion en un dicc
                                         #el tag es cancion
@@ -581,8 +582,8 @@ def ReporteHtml():
             # print(listaActual.dato.nombre, 'es igual a ', combo.get())
             break
         listaActual = listaActual.siguiente
-
     
+    listaActual.dato.Ordenar()
     titulo = combo.get()
     titulo = titulo+'.html'
     # self.textoConsola+='/n'+'REPORTASO'+str(j)            
@@ -600,7 +601,7 @@ def ReporteHtml():
 
         
     aux = listaActual.dato.primero
-    
+    # print(listaActual.dato, 'llll')
     #tr son filas
     while aux:
         print(aux.dato.nombre, aux.dato.reproducciones)
@@ -660,8 +661,9 @@ def generarXml():
     global listasCirculares, listasReproduccion
     titulo = 'listasReproduccion.xml'
     reporte = open(titulo, 'w')
-    contenido = '<ListasReproducción> \n'
-    c=0
+    
+    contenido = '<?xml version="1.0" encoding="UTF-8"?>\n<ListasReproducción> \n'
+    
     aux = listasCirculares.primero #Esta es la primera lista de reproduccion
     # print(aux.dato)
     # print(aux2, '2')
@@ -671,10 +673,9 @@ def generarXml():
         aux2 = aux.dato.primero #Esta es la primera cancion
 
         contenido+=f'   <Lista nombre={aux.dato.nombre}>\n'
-        print('w1')
-        c+=1
+        
         while aux2:
-            print('w2', c)
+            
             contenido+=f'   <cancion nombre={aux2.dato.nombre}>\n'
             contenido+=f'       <artista> {aux2.dato.artista} </artista>\n'
             contenido+=f'       <album> {aux2.dato.album} </album>\n'

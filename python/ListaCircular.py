@@ -54,3 +54,24 @@ class ListaCircular:
             aux = aux.anterior
             if aux == self.ultimo:
                 break
+
+    def Ordenar(self):
+        aux = self.primero
+        while aux:
+            aux2 = self.primero.siguiente
+            aux3 = self.primero
+            while aux2:
+                if aux2.dato.reproducciones > aux3.dato.reproducciones:
+                    tmp = aux3.dato
+                    aux3.dato = aux2.dato
+                    aux2.dato = tmp
+                aux2 = aux2.siguiente
+                aux3 = aux3.siguiente
+                if aux2 == self.primero:
+                    break
+                
+
+            aux = aux.siguiente
+            if aux == self.primero:
+                break
+        
