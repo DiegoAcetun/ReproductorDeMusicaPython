@@ -9,6 +9,7 @@ from graphviz import Graph
 from graphviz import Digraph
 import graphviz
 
+
 from pygame import mixer
 from os import system
 
@@ -836,8 +837,11 @@ def Graphviz():
     contador = 0
     aux = listaArtistas.primero
     print(listaArtistas.size)
+
     g = Digraph('ejemplo', format='png')
     g.node(str(id), aux.dato.artista)
+    g.edge('0', '1', constraint='false')
+
     # g.node('0', 'a')
     # g.node('1', 'b')
 
@@ -846,21 +850,24 @@ def Graphviz():
     idArtista=str(id)
     
     id+=1
+    idPrimero=0
+    idSegundo=0
     bandera=False
+    bandera2=False
     while aux != None:
         # if id>1:
             
-        print('*'*25)
-        print('artista', aux.dato.artista, )
-        # print(aux.dato.primero.dato)
+        # print('*'*25)
+        # # print('artista', aux.dato.artista, )
+        # # print(aux.dato.primero.dato)
         aux2 = aux.dato.primero 
-        # aux4 = aux.dato.primero
-        # print('albumes', end='   ')
-        #Recorriendo albumes de los artistas para obtener solo los albumes
-        # while aux4 != None:
+        # # aux4 = aux.dato.primero
+        # # print('albumes', end='   ')
+        # #Recorriendo albumes de los artistas para obtener solo los albumes
+        # # while aux4 != None:
             
-        #     print(aux4.dato.album, end='   ')
-        #     aux4 = aux4.siguiente
+        # #     print(aux4.dato.album, end='   ')
+        # #     aux4 = aux4.siguiente
 
 
         #Recorremos los albumes del artista para obtener las canciones
@@ -868,7 +875,7 @@ def Graphviz():
         while aux2 != None:
             if contador==0:
                 if bandera:
-                    print('entra')
+                    # print('entra')
                     g.node(str(id), aux2.dato.album)
                     id1=str(id)
                     g.edge(idArtista, str(id), dir='both')
@@ -885,8 +892,9 @@ def Graphviz():
                     idAlbum=str(id)
                     id2=str(id)
                     id+=1
+                    
                     contador+=1
-            # print('album', aux2.dato.album)
+        #     # print('album', aux2.dato.album)
             aux3 = aux2.dato.primero
             #Recorriendo el album para pbtener las canciones
             # print('CANCIONES')
@@ -895,25 +903,40 @@ def Graphviz():
             while aux3 != None:
                 # print(aux3.dato.nombre)
                 if contador2 == 0:
-                    g.node(str(id), aux3.dato.nombre)
-                    id1=str(id)
-                    g.edge(idAlbum, str(id), dir='both')
-
-                    # g.edge(id2, str(id), constraint='false')
-                    # id2=str(id)
-                    id+=1
-                    contador2+=1
+                    
+                    
+                        g.node(str(id), aux3.dato.nombre)
+                        g.edge(idAlbum, str(id), dir='both')
+                        
+                        # g.edge(id3, str(id), constraint='false')
+                        # id2=str(id)
+                        if bandera2:
+                            # g.edge('10', '14', dir='both', constraint='false')
+                            print('desde b', id3, str(id))
+                            pass
+                        id3=str(id)
+                        
+                        id+=1
+                        contador2+=1
+                        
 
                 aux3 = aux3.siguiente
+                bandera2=True
+                
                 if aux3!= None:
-                    # print('entra')
-                    g.node(str(id), aux3.dato.nombre, dir='both')
-                    id1=str(id)
+                    # print('entra dddd')
+                    g.node(str(id), aux3.dato.nombre, dir='both', constraint='false')
                     g.edge(idAlbum, str(id), dir='both')
+                    g.edge(id3, str(id), constraint='false', dir='both')
+                    id3=str(id)
+                    print('desde none', id3)
                     id+=1
+        
 
                 
             aux2 = aux2.siguiente
+            bandera=True
+
             if aux2 != None:
                 # print('aa', aux2.dato.album)
                 g.node(str(id), aux2.dato.album)
@@ -922,15 +945,14 @@ def Graphviz():
                 g.edge(id2, str(id), constraint='false', dir='both')
                 id2=str(id)
                 idAlbum=str(id)
-                bandera=True
                 id+=1
 
 
-            # print(aux2)
+        #     # print(aux2)
         
 
 
-        # break
+        # # break
         aux = aux.siguiente
         if aux !=None:
             g.node(str(id), aux.dato.artista)
@@ -940,7 +962,8 @@ def Graphviz():
             idArtista = str(id)
 
             id+=1
-        print(id)
+        # print(id)
+        # break
         
         
         
