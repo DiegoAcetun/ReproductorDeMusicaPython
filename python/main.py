@@ -430,7 +430,7 @@ def Pila():
 
 def LeerXml():
     global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
-    tree = ET.parse("../archivos/1.xml")
+    tree = ET.parse("../archivos/2.xml")
     root = tree.getroot()
     
     for i in range(len(root)): #root.tag es biblioteca
@@ -840,7 +840,7 @@ def Graphviz():
 
     g = Digraph('ejemplo', format='png')
     g.node(str(id), aux.dato.artista)
-    g.edge('0', '1', constraint='false')
+    
 
     # g.node('0', 'a')
     # g.node('1', 'b')
@@ -973,6 +973,82 @@ def Graphviz():
 
     g.view()   
 
+    pass
+
+def funcion():
+    global listaArtistas, listaAlbumes, listaCanciones, id
+    listaIdArtista=ListaDoble()
+    listaIdAlbumes=ListaDoble()
+    id=0
+    aux = listaArtistas.primero
+    g = Digraph('ejemplo2', format='png')
+    g.node(str(id), aux.dato.artista)
+    idPrimerArtista=id
+    idArtistaIzquierda=id
+    listaIdArtista.agregarFinal(id)
+    id+=1
+    #conectamos los artistas
+    while aux != None:
+        aux = aux.siguiente
+        if aux!=None:
+            g.node(str(id), aux.dato.artista)
+            g.edge(str(idArtistaIzquierda), str(id), constraint='false')
+            idArtistaIzquierda=id
+            listaIdArtista.agregarFinal(id)
+
+            id+=1
+        # print(id)
+
+
+    #Conectamos albumes
+    idAlbumIzquierda=id
+    aux = listaArtistas.primero
+    c=0
+    auxIdArtista=listaIdArtista.primero; bandera=False
+    while aux!=None:
+        #Recorro los albumes de los artistas
+        aux2=aux.dato.primero
+
+        while aux2!= None:
+            # print(auxIdArtista.dato)
+            # print(aux2.dato.album)
+            g.node(str(id), aux2.dato.album)
+            g.edge(str(auxIdArtista.dato), str(id))
+            aux2=aux2.siguiente
+            if bandera:
+                g.edge(str(idAlbumIzquierda), str(id), constraint='false')
+            idAlbumIzquierda=id
+            listaIdAlbumes.agregarFinal(id)
+            id+=1
+                
+            bandera=True
+        aux=aux.siguiente
+        auxIdArtista=auxIdArtista.siguiente
+        
+    aux = listaAlbumes.primero
+    auxIdAlbumes=listaIdAlbumes.primero
+    idCancionIzquierda=id
+    bandera = False
+    while aux!= None:
+        aux2= aux.dato.primero
+        # print('*'*25)
+        # print('album', aux.dato.album)
+        while aux2 !=None:
+            g.node(str(id), aux2.dato.nombre)
+            g.edge(str(auxIdAlbumes.dato), str(id))
+            # print(aux2.dato.nombre)
+            if bandera:
+                print(idCancionIzquierda, id)
+                # g.edge(str(idCancionIzquierda), str(id), constraint='false')
+                pass
+            idCancionIzquierda=id
+            id+=1
+            bandera=True
+            aux2=aux2.siguiente
+        aux=aux.siguiente
+        auxIdAlbumes=auxIdAlbumes.siguiente
+        pass
+    g.view()
     pass
 def ReporteHtml():
     global listaActual, combo, listasCirculares
@@ -1283,7 +1359,8 @@ botonReproducirAlbum.pack()
 botonReproducirAlbum.place(x=290, y=200)
 
 LeerXml()
-Graphviz()
+# Graphviz()
+funcion()
 # Albumes()
 # ventana.mainloop()
 # opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)
