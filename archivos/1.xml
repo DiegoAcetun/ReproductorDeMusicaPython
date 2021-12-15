@@ -2,25 +2,25 @@
 <biblioteca>
     <cancion nombre="Heroes Tonight">
         <artista>"artista1" </artista>
-        <album> </album>
+        <album>"album2"</album>
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/heroes.mp3"</ruta>
     </cancion>
     <cancion nombre="alone">
-        <artista>"artista1"</artista>
+        <artista>"artista2"</artista>
         <album> "album1"</album>,
         <imagen> "../Img/alone.png"</imagen>
         <ruta>"../Musica/alone.mp3"</ruta>
     </cancion>
     <cancion nombre="faded">,
         <artista>"artista2"</artista>
-        <album> "album2"</album>,
+        <album> "album12"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
     <cancion nombre="waka waka">,
         <artista>"artista2"   </artista>
-        <album> "album2"</album>,
+        <album> "album10"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/waka.mp3"</ruta>
     </cancion>
@@ -38,7 +38,7 @@
     </cancion>
     <cancion nombre="live it up">,
         <artista>"artista1" </artista>
-        <album> "album1"</album>,
+        <album> "album11"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/live.mp3"</ruta>
     </cancion>

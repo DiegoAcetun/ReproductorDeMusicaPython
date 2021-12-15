@@ -5,14 +5,19 @@ import easygui
 import random
 import xml.etree.ElementTree as ET
 from tkinter import messagebox
+from graphviz import Graph
+from graphviz import Digraph
+import graphviz
 
 from pygame import mixer
 from os import system
+
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
 Aleatorio = None; pila = []; pilaNombre = []; eliminado = None; bandera = False; posicionPila=0
-auxEliminado = None; imgCancion = None; labelImgCancion=None
+auxEliminado = None; imgCancion = None; labelImgCancion=None; albumActual = None
+reproduciendoAlbum = False
 from tkinter import *
 from ListaDobleAlbum import ListaDobleAlbum
 from ListaDobleCancion import ListaDobleCancion
@@ -30,12 +35,46 @@ listasReproduccion = ListaCircular()
 cancionActual = None
 listaActual = None
 listasReproduccionBox = []
+albumesBox = []
+id = 0
+listasCircularesAlbumes = ListaDoble()
+listaAlbum = ListaCircular()
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
     global combo, listaActual, txtLabel, label, Aleatorio, bandera, posicionPila, imgCancion, labelImgCancion
     #ultimo en agregar primero en salir  
-    global pila, combo, pilaNombre, eliminado
+    global pila, combo, pilaNombre, eliminado, reproduciendoAlbum, albumActual
+    if reproduciendoAlbum:
+        cancionActual = albumActual.primero #Esta es la primera cancion de  la lista
+        # print(cancionActual)
+        # print(cancionActual.dato.ruta)
+        mixer.init()
+        cancion = cancionActual.dato.ruta
+        
+        cancion = cancion.replace('"', '')
+        
+        if reproducir:
+            txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+            label.config(text=txtLabel)
+            cancionActual.dato.reproducciones+=1
+            mixer.music.load(cancion)
+            mixer.music.set_volume(0.7)
+            mixer.music.play()
+            reproducir = False
+            botonReproducir.configure(image=imgPausa)
+            return
+        if pausa:
+            mixer.music.unpause()
+            botonReproducir.configure(image=imgPausa)
+            # botonReproducir.image = imgPausa
+            pausa = False
+        else:
+            mixer.music.pause()
+            botonReproducir.configure(image=imgPlay)
+            # botonReproducir.image = imgPausa
+            pausa = True
+        return
     
     if Aleatorio.get():
         
@@ -133,9 +172,22 @@ def Play():
 def Siguiente():
     global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa
     global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado
-    global imgCancion, labelImgCancion
+    global imgCancion, labelImgCancion, reproduciendoAlbum
     mixer.music.stop()
-    
+    if reproduciendoAlbum:
+        cancionActual = cancionActual.siguiente
+        print(cancionActual.dato.nombre)
+        cancion = cancionActual.dato.ruta
+        txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+        label.config(text=txtLabel)
+        botonReproducir.configure(image=imgPausa)
+        cancion = cancion.replace('"', '')
+        cancionActual.dato.reproducciones+=1
+        mixer.music.load(cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        pausa = False
+        return
     if Aleatorio.get():
         actual = random.randint(0, len(pila[posicionPila])-1)
         # print(actual, 'actual')
@@ -177,9 +229,23 @@ def Siguiente():
         mixer.music.play()
         pausa = False
 def Anterior():
-    global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa, imgCancion, labelImgCancion
+    global cancion, cancionActual, botonReproducir, imgPlay, imgPausa, pausa, imgCancion, labelImgCancion    
+    global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado, reproduciendoAlbum
     mixer.music.stop()
-    global pila, combo, pilaNombre, eliminado, Aleatorio, posicionPila, bandera, auxEliminado
+    if reproduciendoAlbum:
+        cancionActual = cancionActual.anterior
+        txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
+        label.config(text=txtLabel)
+        botonReproducir.configure(image=imgPausa)
+        cancionActual.dato.reproducciones+=1
+        mixer.music.stop()
+        cancion = cancionActual.dato.ruta
+        cancion = cancion.replace('"', '')
+        mixer.music.load(cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        pausa = False
+        return
     if Aleatorio.get():
 
 
@@ -233,11 +299,12 @@ def Pausa():
     pausa = True
     
 def Stop():
-    global pausa, botonPausa, botonReproducir, imgPausa, reproducir
+    global pausa, botonPausa, botonReproducir, imgPausa, reproducir, reproduciendoAlbum
     mixer.music.stop()
     pausa = False
     reproducir = True
     botonReproducir.configure(image=imgPlay)
+    reproduciendoAlbum = False
 
 def recorrerListas():
     global var, listaC, listasReproduccion, listasCirculares
@@ -305,7 +372,7 @@ def obtenerOpcion():
             messagebox.showerror(message=msj, title="Lista de reproduccion")
         else:
             msj = 'Lista de reproduccion '+ text.get(1.0, 'end-1c')+ ' ha sido creada'
-            messagebox.showinfo(message=msj, title="Título")
+            messagebox.showinfo(message=msj, title="Nueva Lista")
             listasReproduccion.nombre = text.get(1.0, 'end-1c')
             listasCirculares.agregarFinal(listasReproduccion)
             listasReproduccionBox.append(listasReproduccion.nombre)
@@ -319,7 +386,7 @@ def obtenerOpcion():
 
     else:
         msj = 'Ingrese un nombre para la lista '
-        messagebox.showerror(message=msj, title="Título")
+        messagebox.showerror(message=msj, title="Nueva Lista")
 
     text.delete(1.0, 'end-1c')
 
@@ -753,6 +820,137 @@ def AnidarListas():
 
         
         aux = aux.siguiente
+
+def Graphviz():
+    global id, listaArtistas, listaAlbumes, listaCanciones
+    # g = Digraph('ejemplo', format='png')
+    # g.node(str(id), 'King Arthur')
+    # id+=1
+    # g.node(str(id), 'Sir Bedevere the Wise')
+    # id+=1
+    # g.node(str(id), 'Sir Lancelot the Brave')
+
+    # g.edges(['01', '02', '10'])
+    # g.edge('1', '2', constraint='false')
+    # g = Digraph('archivo', format='png')
+    contador = 0
+    aux = listaArtistas.primero
+    print(listaArtistas.size)
+    g = Digraph('ejemplo', format='png')
+    g.node(str(id), aux.dato.artista)
+    # g.node('0', 'a')
+    # g.node('1', 'b')
+
+    # g.edge('0', '1', constraint='false')
+    id0=str(id)
+    idArtista=str(id)
+    
+    id+=1
+    bandera=False
+    while aux != None:
+        # if id>1:
+            
+        print('*'*25)
+        print('artista', aux.dato.artista, )
+        # print(aux.dato.primero.dato)
+        aux2 = aux.dato.primero 
+        # aux4 = aux.dato.primero
+        # print('albumes', end='   ')
+        #Recorriendo albumes de los artistas para obtener solo los albumes
+        # while aux4 != None:
+            
+        #     print(aux4.dato.album, end='   ')
+        #     aux4 = aux4.siguiente
+
+
+        #Recorremos los albumes del artista para obtener las canciones
+        contador = 0
+        while aux2 != None:
+            if contador==0:
+                if bandera:
+                    print('entra')
+                    g.node(str(id), aux2.dato.album)
+                    id1=str(id)
+                    g.edge(idArtista, str(id), dir='both')
+                    g.edge(id2, str(id), constraint='false', dir='both')
+                    idAlbum=str(id)
+                    id2=str(id)
+                    id+=1
+                    contador+=1
+                    pass
+                else:
+                    g.node(str(id), aux2.dato.album)
+                    id1=str(id)
+                    g.edge(idArtista, str(id), dir='both')
+                    idAlbum=str(id)
+                    id2=str(id)
+                    id+=1
+                    contador+=1
+            # print('album', aux2.dato.album)
+            aux3 = aux2.dato.primero
+            #Recorriendo el album para pbtener las canciones
+            # print('CANCIONES')
+            contador2=0
+            
+            while aux3 != None:
+                # print(aux3.dato.nombre)
+                if contador2 == 0:
+                    g.node(str(id), aux3.dato.nombre)
+                    id1=str(id)
+                    g.edge(idAlbum, str(id), dir='both')
+
+                    # g.edge(id2, str(id), constraint='false')
+                    # id2=str(id)
+                    id+=1
+                    contador2+=1
+
+                aux3 = aux3.siguiente
+                if aux3!= None:
+                    # print('entra')
+                    g.node(str(id), aux3.dato.nombre, dir='both')
+                    id1=str(id)
+                    g.edge(idAlbum, str(id), dir='both')
+                    id+=1
+
+                
+            aux2 = aux2.siguiente
+            if aux2 != None:
+                # print('aa', aux2.dato.album)
+                g.node(str(id), aux2.dato.album)
+                id1=str(id)
+                g.edge(idArtista, str(id))
+                g.edge(id2, str(id), constraint='false', dir='both')
+                id2=str(id)
+                idAlbum=str(id)
+                bandera=True
+                id+=1
+
+
+            # print(aux2)
+        
+
+
+        # break
+        aux = aux.siguiente
+        if aux !=None:
+            g.node(str(id), aux.dato.artista)
+            id1=str(id)
+            g.edge(id0, id1, constraint='false', dir='both')
+            id0=id1
+            idArtista = str(id)
+
+            id+=1
+        print(id)
+        
+        
+        
+
+
+
+
+    g.view()   
+
+    pass
 def ReporteHtml():
     global listaActual, combo, listasCirculares
     contenido=''
@@ -913,16 +1111,49 @@ def CargarMILista():
             listasReproduccion.agregarFinal(nuevaCancion)
             pilaAux.append(nuevaCancion)
 
-        listasCirculares.agregarFinal(listasReproduccion)
+        # listasCirculares.agregarFinal(listasReproduccion)
         listasReproduccionBox.append(listasReproduccion.nombre)
         pila.append(pilaAux)
         combo.configure(values=(listasReproduccionBox))
 
 
     AnidarListas()
-    CrearCheckbox()
-    
+    # CrearCheckbox()
+def ReproducirAlbum():
+    global comboAlbumes, albumActual, reproducir, pausa, reproduciendoAlbum, listasCircularesAlbumes
+    global listaAlbum
+    print(comboAlbumes.get())
+    aux = listaAlbumes.primero
+    albumActual = ListaCircular()
+    while aux!= None:
+        aux2 = aux.dato.primero
+        if aux.dato.album == comboAlbumes.get():
+            while aux2 != None:
+
+                print(aux2.dato.nombre)
+                albumActual.agregarFinal(aux2.dato)
+                aux2 = aux2.siguiente
+            
+            reproduciendoAlbum = True
+            break
         
+        aux = aux.siguiente
+    Play()
+    
+
+    pass
+def Albumes():
+    global listaAlbumes, albumesBox
+    aux = listaAlbumes.primero
+    while aux!= None:
+        if aux.dato.album == 'single':
+            pass
+        else:
+            albumesBox.append(aux.dato.album)
+        aux = aux.siguiente
+
+    comboAlbumes.config(values=albumesBox)
+
             
 
 ventana = tk.Tk()
@@ -943,7 +1174,7 @@ botonRHtml = tk.Button(ventana, text="Reporte HTML", command=ReporteHtml, height
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
-botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Pila, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Graphviz, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRGraphviz.pack()
 botonRGraphviz.place(x=475, y=10)
 
@@ -1016,8 +1247,22 @@ botonGenerarXml.place(x=700, y=10)
 botonCragarMiLista = tk.Button(ventana, text="Cargar Mis Listas", command=CargarMILista, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonCragarMiLista.pack()
 botonCragarMiLista.place(x=470, y=720)
+
+LabelCboxAlbumes = tk.Label(ventana,text='Albumes disponibles', font=fuente, bg='red', fg = 'white')
+LabelCboxAlbumes.pack()
+LabelCboxAlbumes.place(x=300, y=100)
+comboAlbumes = ttk.Combobox(ventana)
+comboAlbumes.place(x=300, y=150)
+comboAlbumes['values'] = (albumesBox)
+
+botonReproducirAlbum = tk.Button(ventana, command=ReproducirAlbum, text='Reproducir Album', font=fuente, bg='midnightblue', fg = 'white', activebackground="powderblue")
+botonReproducirAlbum.pack()
+botonReproducirAlbum.place(x=290, y=200)
+
 LeerXml()
-ventana.mainloop()
+Graphviz()
+# Albumes()
+# ventana.mainloop()
 # opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)
 # opcionCancion.pack
 # opcionCancion.place(x=20, y=200)
