@@ -1,46 +1,52 @@
 digraph ejemplo2 {
 	0 [label="\"artista1\""]
 	1 [label="\"artista2\""]
-	0 -> 1 [constraint=false]
+	0 -> 1 [constraint=false dir=both]
 	2 [label="\"artista3\""]
-	1 -> 2 [constraint=false]
+	1 -> 2 [constraint=false dir=both]
 	3 [label="\"album1\""]
-	0 -> 3
-	3 -> 3 [constraint=false dir=both]
+	0 -> 3 [dir=both]
 	4 [label="\"album4\""]
-	1 -> 4
+	1 -> 4 [dir=both]
 	3 -> 4 [constraint=false dir=both]
 	5 [label="\"album6\""]
-	1 -> 5
+	1 -> 5 [dir=both]
 	4 -> 5 [constraint=false dir=both]
 	6 [label="\"album8\""]
-	2 -> 6
+	2 -> 6 [dir=both]
 	5 -> 6 [constraint=false dir=both]
 	7 [label="\"album9\""]
-	2 -> 7
+	2 -> 7 [dir=both]
 	6 -> 7 [constraint=false dir=both]
 	8 [label=cancion1]
-	3 -> 8
+	3 -> 8 [dir=both]
 	9 [label=cancion2]
-	3 -> 9
+	3 -> 9 [dir=both]
+	8 -> 9 [constraint=false dir=both]
 	10 [label=cancion3]
-	3 -> 10
+	3 -> 10 [dir=both]
+	9 -> 10 [constraint=false dir=both]
 	11 [label=cancion4]
-	4 -> 11
+	4 -> 11 [dir=both]
 	12 [label=cancion5]
-	4 -> 12
+	4 -> 12 [dir=both]
+	11 -> 12 [constraint=false dir=both]
 	13 [label=cancion6]
-	5 -> 13
+	5 -> 13 [dir=both]
 	14 [label=cancion7]
-	5 -> 14
+	5 -> 14 [dir=both]
+	13 -> 14 [constraint=false dir=both]
 	15 [label=cancion8]
-	6 -> 15
+	6 -> 15 [dir=both]
 	16 [label=cancion9]
-	6 -> 16
+	6 -> 16 [dir=both]
+	15 -> 16 [constraint=false dir=both]
 	17 [label=cancion10]
-	6 -> 17
+	6 -> 17 [dir=both]
+	16 -> 17 [constraint=false dir=both]
 	18 [label=cancion11]
-	7 -> 18
+	7 -> 18 [dir=both]
 	19 [label=cancion12]
-	7 -> 19
+	7 -> 19 [dir=both]
+	18 -> 19 [constraint=false dir=both]
 }

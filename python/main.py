@@ -992,7 +992,7 @@ def funcion():
         aux = aux.siguiente
         if aux!=None:
             g.node(str(id), aux.dato.artista)
-            g.edge(str(idArtistaIzquierda), str(id), constraint='false')
+            g.edge(str(idArtistaIzquierda), str(id), constraint='false', dir='both')
             idArtistaIzquierda=id
             listaIdArtista.agregarFinal(id)
 
@@ -1013,10 +1013,10 @@ def funcion():
             # print(auxIdArtista.dato)
             # print(aux2.dato.album)
             g.node(str(id), aux2.dato.album)
-            g.edge(str(auxIdArtista.dato), str(id))
+            g.edge(str(auxIdArtista.dato), str(id), dir='both')
             aux2=aux2.siguiente
             if bandera:
-                g.edge(str(idAlbumIzquierda), str(id), constraint='false')
+                g.edge(str(idAlbumIzquierda), str(id), constraint='false', dir='both')
             idAlbumIzquierda=id
             listaIdAlbumes.agregarFinal(id)
             id+=1
@@ -1033,13 +1033,14 @@ def funcion():
         aux2= aux.dato.primero
         # print('*'*25)
         # print('album', aux.dato.album)
+        bandera=False
         while aux2 !=None:
             g.node(str(id), aux2.dato.nombre)
-            g.edge(str(auxIdAlbumes.dato), str(id))
+            g.edge(str(auxIdAlbumes.dato), str(id), dir='both')
             # print(aux2.dato.nombre)
             if bandera:
                 print(idCancionIzquierda, id)
-                # g.edge(str(idCancionIzquierda), str(id), constraint='false')
+                g.edge(str(idCancionIzquierda), str(id), constraint='false', dir='both')
                 pass
             idCancionIzquierda=id
             id+=1
