@@ -8,6 +8,7 @@ from tkinter import messagebox
 from graphviz import Graph
 from graphviz import Digraph
 import graphviz
+import copy
 
 
 from pygame import mixer
@@ -127,7 +128,10 @@ def Play():
             pausa = True
         
     else:
-    
+        if combo.get()== '':
+            msj = 'No se ha seleccionado ninguna lista de reproducción'
+            messagebox.showinfo(message=msj, title="Lista de reproduccion")
+            return
         cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
         listaActual = listasCirculares.primero
 
@@ -136,7 +140,7 @@ def Play():
             if cancionActual.dato.nombre == combo.get(): #Este es el nombre de la lista seleccionada
                 # print(listaActual.dato.nombre, 'es igual a ', combo.get())
                 break
-            cancionActual = cancionActual.siguiente
+            cancionActual = cancionActual.siguiente 
             pass
         
         # print(listasCirculares.size)
@@ -177,7 +181,7 @@ def Siguiente():
     mixer.music.stop()
     if reproduciendoAlbum:
         cancionActual = cancionActual.siguiente
-        print(cancionActual.dato.nombre)
+        # print(cancionActual.dato.nombre)
         cancion = cancionActual.dato.ruta
         txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
         label.config(text=txtLabel)
@@ -218,7 +222,7 @@ def Siguiente():
         
     else:
         cancionActual = cancionActual.siguiente
-        print(cancionActual.dato.nombre)
+        # print(cancionActual.dato.nombre)
         cancion = cancionActual.dato.ruta
         txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
         label.config(text=txtLabel)
@@ -430,7 +434,7 @@ def Pila():
 
 def LeerXml():
     global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
-    tree = ET.parse("../archivos/2.xml")
+    tree = ET.parse("../archivos/1.xml")
     root = tree.getroot()
     
     for i in range(len(root)): #root.tag es biblioteca
@@ -451,13 +455,13 @@ def LeerXml():
                 if root[i][j].text.strip(' ')== '':
                     nuevaCancion.album = 'single'
                 else:
-                    nuevaCancion.album = root[i][j].text.strip(' ')
+                    nuevaCancion.album = root[i][j].text.strip(' ').replace('"', '')
             elif root[i][j].tag == 'ruta':
-                nuevaCancion.ruta = root[i][j].text.strip(' ')
+                nuevaCancion.ruta = root[i][j].text.strip(' ').replace('"', '')
             elif root[i][j].tag == 'imagen':
-                nuevaCancion.imagen = root[i][j].text.strip(' ')
+                nuevaCancion.imagen = root[i][j].text.strip(' ').replace('"', '')
             elif root[i][j].tag == 'artista':
-                nuevaCancion.artista = root[i][j].text.strip(' ')
+                nuevaCancion.artista = root[i][j].text.strip(' ').replace('"', '')
         
         listaCanciones.agregarFinal(nuevaCancion)
     AnidarListas()
@@ -975,7 +979,7 @@ def Graphviz():
 
     pass
 
-def funcion():
+def Grafo():
     global listaArtistas, listaAlbumes, listaCanciones, id
     listaIdArtista=ListaDoble()
     listaIdAlbumes=ListaDoble()
@@ -1008,7 +1012,7 @@ def funcion():
     while aux!=None:
         #Recorro los albumes de los artistas
         aux2=aux.dato.primero
-
+        bandera=False
         while aux2!= None:
             # print(auxIdArtista.dato)
             # print(aux2.dato.album)
@@ -1049,21 +1053,26 @@ def funcion():
         aux=aux.siguiente
         auxIdAlbumes=auxIdAlbumes.siguiente
         pass
-    g.view()
+    # g.view()
     pass
 def ReporteHtml():
     global listaActual, combo, listasCirculares
     contenido=''
-    listaActual = listasCirculares.primero
+    listaOrdenada = copy.deepcopy(listasCirculares.primero)
 
-    while listaActual != None:
+    while listaOrdenada != None:
         # print('sxsx',listaActual.dato.nombre)
-        if listaActual.dato.nombre == combo.get():
+        if listaOrdenada.dato.nombre == combo.get():
             # print(listaActual.dato.nombre, 'es igual a ', combo.get())
             break
-        listaActual = listaActual.siguiente
+        listaOrdenada = listaOrdenada.siguiente
     
-    listaActual.dato.Ordenar()
+    # listaOrdenada = listaActual
+    # listaOrdenada = copy.deepcopy(aux.dato)#Clonamos la lista de reproducción
+    print(listaOrdenada.dato.primero.dato.nombre, listasCirculares.primero.dato.primero.dato.nombre, 'primera cancion')
+    listaOrdenada.dato.Ordenar()
+    print(listasCirculares.primero.dato.primero.dato.nombre, 'primera cancion')
+    # listaActual.dato.Ordenar()
     titulo = combo.get()
     titulo = titulo+'.html'
     # self.textoConsola+='/n'+'REPORTASO'+str(j)            
@@ -1080,11 +1089,11 @@ def ReporteHtml():
     
 
         
-    aux = listaActual.dato.primero
+    aux = listaOrdenada.dato.primero
     # print(listaActual.dato, 'llll')
     #tr son filas
     while aux:
-        print(aux.dato.nombre, aux.dato.reproducciones)
+        # print(aux.dato.nombre, aux.dato.reproducciones)
         
         celdas+=f'''<tr>
         <td>{aux.dato.nombre}</td>
@@ -1096,7 +1105,7 @@ def ReporteHtml():
         '''
 
         aux = aux.siguiente
-        if aux == listaActual.dato.primero:
+        if aux == listaOrdenada.dato.primero:
             break
     
     contenido=(f'''<html>
@@ -1222,7 +1231,10 @@ def CargarMILista():
 def ReproducirAlbum():
     global comboAlbumes, albumActual, reproducir, pausa, reproduciendoAlbum, listasCircularesAlbumes
     global listaAlbum
-    print(comboAlbumes.get())
+    if comboAlbumes.get()== '':
+        msj = 'No se ha seleccionado ningun album'
+        messagebox.showwarning(message=msj, title="HTML")
+        return
     aux = listaAlbumes.primero
     albumActual = ListaCircular()
     while aux!= None:
@@ -1274,7 +1286,7 @@ botonRHtml = tk.Button(ventana, text="Reporte HTML", command=ReporteHtml, height
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
-botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Graphviz, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Grafo, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRGraphviz.pack()
 botonRGraphviz.place(x=475, y=10)
 
@@ -1323,7 +1335,7 @@ botonCrearListaReproduccion.place(x=400, y=900)
 LabelCbox = tk.Label(ventana,text='LISTAS DE REPRODUCCION DISPONIBLES', font=fuente)
 LabelCbox.pack()
 LabelCbox.place(x=900, y=25)
-combo = ttk.Combobox(ventana)
+combo = ttk.Combobox(ventana, state="readonly")
 combo.place(x=1000, y=100)
 combo['values'] = (listasReproduccionBox)
 
@@ -1351,7 +1363,7 @@ botonCragarMiLista.place(x=470, y=720)
 LabelCboxAlbumes = tk.Label(ventana,text='Albumes disponibles', font=fuente, bg='red', fg = 'white')
 LabelCboxAlbumes.pack()
 LabelCboxAlbumes.place(x=300, y=100)
-comboAlbumes = ttk.Combobox(ventana)
+comboAlbumes = ttk.Combobox(ventana, state="readonly")
 comboAlbumes.place(x=300, y=150)
 comboAlbumes['values'] = (albumesBox)
 
@@ -1361,9 +1373,9 @@ botonReproducirAlbum.place(x=290, y=200)
 
 LeerXml()
 # Graphviz()
-funcion()
-# Albumes()
-# ventana.mainloop()
+# funcion()
+Albumes()
+ventana.mainloop()
 # opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)
 # opcionCancion.pack
 # opcionCancion.place(x=20, y=200)

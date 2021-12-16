@@ -6,73 +6,18 @@
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/heroes.mp3"</ruta>
     </cancion>
-    <cancion nombre="cancion2">
-        <artista>"artista1"</artista>
-        <album> "album1"</album>,
-        <imagen> "../Img/alone.png"</imagen>
-        <ruta>"../Musica/alone.mp3"</ruta>
-    </cancion>
-    <cancion nombre="cancion3">,
-        <artista>"artista1"</artista>
-        <album> "album1"</album>,
-        <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/faded.mp3"</ruta>
-    </cancion>
     <cancion nombre="cancion4">,
         <artista>"artista2"</artista>
         <album> "album4"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/waka.mp3"</ruta>
     </cancion>
-    <cancion nombre="cancion5">,
-        <artista>"artista2"</artista>
-        <album> "album4"</album>,
-        <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/Lean.mp3"</ruta>
-    </cancion>
-    <cancion nombre="cancion6">,
-        <artista>"artista2"</artista>
-        <album> "album6"</album>,
-        <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/lala.mp3"</ruta>
-    </cancion>
-    <cancion nombre="cancion7">,
-        <artista>"artista2" </artista>
-        <album> "album6"</album>,
-        <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/live.mp3"</ruta>
-    </cancion>
+  
     <cancion nombre="cancion8">,
         <artista>"artista3"</artista>
         <album> "album8"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/Believer.mp3"</ruta>
     </cancion>
-    <cancion nombre="cancion9">
-        <artista>"artista3" </artista>
-        <album> "album8"</album>
-        <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/scream.mp3"</ruta>
-    </cancion>
-    <cancion nombre="cancion10">
-        <artista> "artista3"</artista>
-        <album> "album8"</album>
-        <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/saxobeat.mp3"</ruta>
-    </cancion>
-    <cancion nombre="cancion11">
-        <artista>"artista3" </artista>
-        <album> "album9"</album>
-        <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/restos.mp3"</ruta>
-    </cancion>
-    <cancion nombre="cancion12">
-        <artista> "artista3" </artista>
-        <album> "album9"</album>
-        <imagen> "../Img/heroes.png"</imagen>
-        <ruta>"../Musica/cisne.mp3"</ruta>
-    </cancion>
-
-
-
+    
 </biblioteca>

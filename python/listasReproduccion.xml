@@ -1,3 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListasReproducción>
+   <Lista nombre="l1">
+   <cancion nombre="Heroes Tonight">
+       <artista> "artista1" </artista>
+       <album> "album1" </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> "../Img/heroes.png" </imagen>
+       <ruta> "../Musica/heroes.mp3" </ruta>
+   </cancion>
+   <cancion nombre="alone">
+       <artista> "artista1" </artista>
+       <album> "album1" </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> "../Img/alone.png" </imagen>
+       <ruta> "../Musica/alone.mp3" </ruta>
+   </cancion>
+   <cancion nombre="faded">
+       <artista> "artista1" </artista>
+       <album> "album1" </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> "../Img/faded.png" </imagen>
+       <ruta> "../Musica/faded.mp3" </ruta>
+   </cancion>
+   <cancion nombre="waka waka">
+       <artista> "artista2" </artista>
+       <album> "album4" </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> "../Img/faded.png" </imagen>
+       <ruta> "../Musica/waka.mp3" </ruta>
+   </cancion>
+    </Lista>
 </ListasReproducción>
