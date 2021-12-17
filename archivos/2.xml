@@ -2,19 +2,19 @@
 <biblioteca>
     <cancion nombre="cancion1">
         <artista>"artista1" </artista>
-        <album>"album1"</album>
+        <album>"album51"</album>
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/heroes.mp3"</ruta>
     </cancion>
     <cancion nombre="cancion4">,
         <artista>"artista2"</artista>
-        <album> "album4"</album>,
+        <album> "album44"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/waka.mp3"</ruta>
     </cancion>
   
     <cancion nombre="cancion8">,
-        <artista>"artista3"</artista>
+        <artista>"artista38"</artista>
         <album> "album8"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/Believer.mp3"</ruta>

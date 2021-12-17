@@ -14,7 +14,7 @@ import threading
 import time
 import datetime
 from pygame import mixer
-from os import path, pathconf, system
+from os import system
 
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
@@ -119,7 +119,10 @@ def Play():
         return
     
     if Aleatorio.get():
-        
+        if combo.get()== '':
+            msj = 'No se ha seleccionado ninguna lista de reproducción'
+            messagebox.showwarning(message=msj, title="Lista de reproduccion")
+            return
     
         if reproducir:
                 # posicion 0 es el nombre de la lista,  posicon 1 nombre de la cancion
@@ -131,6 +134,8 @@ def Play():
                     posicionPila = i
                     break
             actual = random.randint(0, len(pila[posicionPila])-1)
+            print(len(pila[posicionPila]), 'llll')
+
             # print(actual, 'actual')
             eliminado = pila[posicionPila][actual]
             pila[posicionPila].pop(actual)
@@ -225,6 +230,7 @@ def Siguiente():
     if reproduciendoAlbum:
         cancionActual = cancionActual.siguiente
         # print(cancionActual.dato.nombre)
+
         cancion = cancionActual.dato.ruta
         txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
         label.config(text=txtLabel)
@@ -241,6 +247,8 @@ def Siguiente():
     if Aleatorio.get():
         actual = random.randint(0, len(pila[posicionPila])-1)
         # print(actual, 'actual')
+        print(len(pila[posicionPila]), 'ssss')
+
         auxEliminado = eliminado
         eliminado = pila[posicionPila][actual]
         pila[posicionPila].pop(actual)
@@ -347,7 +355,7 @@ def Cargar():
     global ruta, cancion, pausa, botonReproducir, botonPausa, imgPausa, listasCirculares
     try:
 
-        ruta = easygui.fileopenbox(default='../archivos/')  
+        ruta = easygui.fileopenbox()  
         print(ruta)
         LeerXml()
         Albumes()
@@ -364,13 +372,17 @@ def Pausa():
     pausa = True
     
 def Stop():
-    global pausa, botonPausa, botonReproducir, imgPausa, reproducir, reproduciendoAlbum
+    global pausa, botonPausa, botonReproducir, imgPausa, reproducir, reproduciendoAlbum, pila, eliminado
     mixer.music.stop()
+    if Aleatorio.get() and reproducir==False:
+        pila[posicionPila].append(eliminado)
     pausa = False
     reproducir = True
     botonReproducir.configure(image=imgPlay)
     reproduciendoAlbum = False
 
+    
+    Aleatorio.set(False)
 def recorrerListas():
     global var, listaC, listasReproduccion, listasCirculares
     aux = listasCirculares.primero
@@ -503,36 +515,39 @@ def Pila():
 
 def LeerXml():
     global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
-    tree = ET.parse(ruta)
-    root = tree.getroot()
-    
-    for i in range(len(root)): #root.tag es biblioteca
-        nombreCancion = (root[i].attrib) #Por cada iteracion guadar el nombre de cada cancion en un dicc
-                                        #el tag es cancion
-        nombreCancion = nombreCancion["nombre"] #Esto devuelve solo el nombre de la cancion sin la etiqueta
-        nuevaCancion = Cancion()
+    try:
+        tree = ET.parse(ruta)
+        root = tree.getroot()
         
-        nuevaCancion.nombre = nombreCancion
-        #nombre
-        #Posicion 0 de la lista es la etiqueta cancion
-        # print(root[0][0].text)
-        # print(nombreCancion)
-        #Recorriendo etiqueta cancion
-        for j in range(len(root[0])):
-            if root[i][j].tag== 'album':
-                # print(root[i][j].text)
-                if root[i][j].text.strip(' ')== '':
-                    nuevaCancion.album = 'single'
-                else:
-                    nuevaCancion.album = root[i][j].text.strip(' ').replace('"', '')
-            elif root[i][j].tag == 'ruta':
-                nuevaCancion.ruta = root[i][j].text.strip(' ').replace('"', '')
-            elif root[i][j].tag == 'imagen':
-                nuevaCancion.imagen = root[i][j].text.strip(' ').replace('"', '')
-            elif root[i][j].tag == 'artista':
-                nuevaCancion.artista = root[i][j].text.strip(' ').replace('"', '')
-        
-        listaCanciones.agregarFinal(nuevaCancion)
+        for i in range(len(root)): #root.tag es biblioteca
+            nombreCancion = (root[i].attrib) #Por cada iteracion guadar el nombre de cada cancion en un dicc
+                                            #el tag es cancion
+            nombreCancion = nombreCancion["nombre"] #Esto devuelve solo el nombre de la cancion sin la etiqueta
+            nuevaCancion = Cancion()
+            
+            nuevaCancion.nombre = nombreCancion
+            #nombre
+            #Posicion 0 de la lista es la etiqueta cancion
+            # print(root[0][0].text)
+            # print(nombreCancion)
+            #Recorriendo etiqueta cancion
+            for j in range(len(root[0])):
+                if root[i][j].tag== 'album':
+                    # print(root[i][j].text)
+                    if root[i][j].text.strip(' ')== '':
+                        nuevaCancion.album = 'single'
+                    else:
+                        nuevaCancion.album = root[i][j].text.strip(' ').replace('"', '')
+                elif root[i][j].tag == 'ruta':
+                    nuevaCancion.ruta = root[i][j].text.strip(' ').replace('"', '')
+                elif root[i][j].tag == 'imagen':
+                    nuevaCancion.imagen = root[i][j].text.strip(' ').replace('"', '')
+                elif root[i][j].tag == 'artista':
+                    nuevaCancion.artista = root[i][j].text.strip(' ').replace('"', '')
+            
+            listaCanciones.agregarFinal(nuevaCancion)
+    except:
+        messagebox.showerror(message='Error al leer xml', title='Lectura xml')
     AnidarListas()
     CrearCheckbox()
     # aux = listaCanciones.primero #Esta es la primera lista aux cancion
@@ -817,6 +832,7 @@ def AnidarListas():
         aux2 = aux.dato #Aqui estan los atributos de cada album
         aux2 = aux2.artista
         # print(aux.dato.size)
+        
         if listaArtistas.vacia():
             listaAuxArtistas = ListaDobleArtista()
             listaAuxArtistas.agregarFinal(aux.dato) #aux dato contiene el album a agregar
@@ -827,15 +843,14 @@ def AnidarListas():
         else:
             #aqui recorro las listas artistas
             aux3 = listaArtistas.primero
+            album=False
             while aux3 != None:
                 # print(aux2+aux3.dato.artista+'valores') #esta es una lista artista con atributos
                 #Verificamos si ya existe el artista y solo le agregamos el album
                 #aux 3 es lista artista
                 # print(aux2 == aux3.dato.artista, 'comparacion')
-                if aux2 == aux3.dato.artista:
-        
+                if aux2 == aux3.dato.artista:                   
                     aux3.dato.agregarFinal(aux.dato)
-
                     artistaEncontrado = True
                     
 
@@ -898,6 +913,7 @@ def AnidarListas():
 
         
         aux = aux.siguiente
+    print(listaArtistas.primero.dato.size)
     # print('size', listaAlbumes.size)
 # def Graphviz():
 #     global id, listaArtistas, listaAlbumes, listaCanciones
@@ -1059,76 +1075,82 @@ def Grafo():
     id=0
     aux = listaArtistas.primero
     # print('lisA', listaArtistas.size)
-    g = Digraph('Grafo', format='png')
-    g.node(str(id), aux.dato.artista)
-    idPrimerArtista=id
-    idArtistaIzquierda=id
-    listaIdArtista.agregarFinal(id)
-    id+=1
-    #conectamos los artistas
-    while aux != None:
-        aux = aux.siguiente
-        if aux!=None:
-            g.node(str(id), aux.dato.artista)
-            g.edge(str(idArtistaIzquierda), str(id), constraint='false', dir='both')
-            idArtistaIzquierda=id
-            listaIdArtista.agregarFinal(id)
+    try:
 
-            id+=1
-        # print(id)
+        g = Digraph('Grafo', format='png')
+        g.node(str(id), aux.dato.artista)
+        idPrimerArtista=id
+        idArtistaIzquierda=id
+        listaIdArtista.agregarFinal(id)
+        id+=1
+        #conectamos los artistas
+        while aux != None:
+            aux = aux.siguiente
+            if aux!=None:
+                g.node(str(id), aux.dato.artista)
+                g.edge(str(idArtistaIzquierda), str(id), constraint='false', dir='both')
+                idArtistaIzquierda=id
+                listaIdArtista.agregarFinal(id)
+
+                id+=1
+            # print(id)
 
 
-    #Conectamos albumes
-    idAlbumIzquierda=id
-    aux = listaArtistas.primero
-    c=0
-    auxIdArtista=listaIdArtista.primero; bandera=False
-    while aux!=None:
-        #Recorro los albumes de los artistas
-        aux2=aux.dato.primero
-        bandera=False
-        while aux2!= None:
-            # print(auxIdArtista.dato)
-            # print(aux2.dato.album)
-            g.node(str(id), aux2.dato.album)
-            g.edge(str(auxIdArtista.dato), str(id), dir='both')
-            aux2=aux2.siguiente
-            if bandera:
-                g.edge(str(idAlbumIzquierda), str(id), constraint='false', dir='both')
-            idAlbumIzquierda=id
-            listaIdAlbumes.agregarFinal(id)
-            id+=1
+        #Conectamos albumes
+        idAlbumIzquierda=id
+        aux = listaArtistas.primero
+        c=0
+        auxIdArtista=listaIdArtista.primero; bandera=False
+        while aux!=None:
+            #Recorro los albumes de los artistas
+            aux2=aux.dato.primero
+            bandera=False
+            while aux2!= None:
+                # print(auxIdArtista.dato)
+                # print(aux2.dato.album)
+                g.node(str(id), aux2.dato.album)
+                g.edge(str(auxIdArtista.dato), str(id), dir='both')
+                aux2=aux2.siguiente
+                if bandera:
+                    g.edge(str(idAlbumIzquierda), str(id), constraint='false', dir='both')
+                idAlbumIzquierda=id
+                listaIdAlbumes.agregarFinal(id)
+                id+=1
+                    
+                bandera=True
+            aux=aux.siguiente
+            auxIdArtista=auxIdArtista.siguiente
+            
+        aux = listaAlbumes.primero
+        auxIdAlbumes=listaIdAlbumes.primero
+        idCancionIzquierda=id
+        bandera = False
+        # print(listaAlbumes.size, 'size es estre')
+        while aux!= None:
+            aux2= aux.dato.primero
+            # print('*'*25)
+            # print('album', aux.dato.album)
+            bandera=False
+            while aux2 !=None:
+                g.node(str(id), aux2.dato.nombre)
+                g.edge(str(auxIdAlbumes.dato), str(id), dir='both')
+                # print(aux2.dato.nombre)
+                if bandera:
+                    # print(idCancionIzquierda, id)
+                    g.edge(str(idCancionIzquierda), str(id), constraint='false', dir='both')
+                    pass
+                idCancionIzquierda=id
+                id+=1
+                bandera=True
+                aux2=aux2.siguiente
+            aux=aux.siguiente
+            
+            auxIdAlbumes=auxIdAlbumes.siguiente
                 
-            bandera=True
-        aux=aux.siguiente
-        auxIdArtista=auxIdArtista.siguiente
-        
-    aux = listaAlbumes.primero
-    auxIdAlbumes=listaIdAlbumes.primero
-    idCancionIzquierda=id
-    bandera = False
-    # print(listaAlbumes.size, 'size es estre')
-    while aux!= None:
-        aux2= aux.dato.primero
-        # print('*'*25)
-        # print('album', aux.dato.album)
-        bandera=False
-        while aux2 !=None:
-            g.node(str(id), aux2.dato.nombre)
-            g.edge(str(auxIdAlbumes.dato), str(id), dir='both')
-            # print(aux2.dato.nombre)
-            if bandera:
-                # print(idCancionIzquierda, id)
-                g.edge(str(idCancionIzquierda), str(id), constraint='false', dir='both')
-                pass
-            idCancionIzquierda=id
-            id+=1
-            bandera=True
-            aux2=aux2.siguiente
-        aux=aux.siguiente
-        auxIdAlbumes=auxIdAlbumes.siguiente
-        pass
-    g.view()
+            pass
+        g.view()
+    except:
+        messagebox.showerror(message='Error al generar el grafo', title='Grafo')
     pass
 def ReporteHtml():
     global listaActual, combo, listasCirculares
@@ -1232,44 +1254,47 @@ def ReporteHtml():
 
 def generarXml():
     global listasCirculares, listasReproduccion
-    titulo = 'listasReproduccion.xml'
-    reporte = open(titulo, 'w')
-    
-    contenido = '<?xml version="1.0" encoding="UTF-8"?>\n<ListasReproducción>\n'
-    
-    aux = listasCirculares.primero #Esta es la primera lista de reproduccion
-    # print(aux.dato)
-    # print(aux2, '2')
-    # print(aux.dato.primero, '1')
-    #Recorriendo las listas de reproduccion
-    while aux !=None:
-        aux2 = aux.dato.primero #Esta es la primera cancion
-
-        contenido+=f'   <Lista nombre="{aux.dato.nombre}">\n'
+    try:
+        titulo = 'listasReproduccion.xml'
+        reporte = open(titulo, 'w')
         
-        while aux2:
+        contenido = '<?xml version="1.0" encoding="UTF-8"?>\n<ListasReproducción>\n'
+        
+        aux = listasCirculares.primero #Esta es la primera lista de reproduccion
+        # print(aux.dato)
+        # print(aux2, '2')
+        # print(aux.dato.primero, '1')
+        #Recorriendo las listas de reproduccion
+        while aux !=None:
+            aux2 = aux.dato.primero #Esta es la primera cancion
+
+            contenido+=f'   <Lista nombre="{aux.dato.nombre}">\n'
             
-            contenido+=f'   <cancion nombre="{aux2.dato.nombre}">\n'
-            contenido+=f'       <artista> {aux2.dato.artista} </artista>\n'
-            contenido+=f'       <album> {aux2.dato.album} </album>\n'
-            contenido+=f'       <vecesReproducidas> {aux2.dato.reproducciones} </vecesReproducidas>\n'
-            contenido+=f'       <imagen> {aux2.dato.imagen} </imagen>\n'
-            contenido+=f'       <ruta> {aux2.dato.ruta} </ruta>\n'
-            contenido+=f'   </cancion>\n'
+            while aux2:
+                
+                contenido+=f'   <cancion nombre="{aux2.dato.nombre}">\n'
+                contenido+=f'       <artista> {aux2.dato.artista} </artista>\n'
+                contenido+=f'       <album> {aux2.dato.album} </album>\n'
+                contenido+=f'       <vecesReproducidas> {aux2.dato.reproducciones} </vecesReproducidas>\n'
+                contenido+=f'       <imagen> {aux2.dato.imagen} </imagen>\n'
+                contenido+=f'       <ruta> {aux2.dato.ruta} </ruta>\n'
+                contenido+=f'   </cancion>\n'
 
 
 
-            aux2 = aux2.siguiente
-            if aux2 == aux.dato.primero:
-                break
-        contenido+='    </Lista>\n'
-        aux = aux.siguiente
-    
-    contenido+='</ListasReproducción>\n'
-    reporte.write(contenido)
-    reporte.close()
-    msj = 'Archivo xml generado'
-    messagebox.showinfo(message=msj, title="xml")
+                aux2 = aux2.siguiente
+                if aux2 == aux.dato.primero:
+                    break
+            contenido+='    </Lista>\n'
+            aux = aux.siguiente
+        
+        contenido+='</ListasReproducción>\n'
+        reporte.write(contenido)
+        reporte.close()
+        msj = 'Archivo xml generado'
+        messagebox.showinfo(message=msj, title="xml")
+    except:
+        messagebox.showerror(message='Error al generar xml', title='archivo xml')
 
     
         
@@ -1278,7 +1303,7 @@ def CargarMILista():
     global listasCirculares, listasReproduccion, listasReproduccionBox, pila, ruta, pilaNombre
     try:
 
-        ruta = easygui.fileopenbox(default='')
+        ruta = easygui.fileopenbox()
         messagebox.showinfo(message='Archivo cargado', title='Cargar archivo')
     except:
         messagebox.showerror(message='Error al cargar el archivo de las listas', title='Cargar archivo')
@@ -1317,7 +1342,7 @@ def CargarMILista():
         combo.configure(values=(listasReproduccionBox))
 
 
-    AnidarListas()
+    # AnidarListas()
     # CrearCheckbox()
 def ReproducirAlbum():
     global comboAlbumes, albumActual, reproducir, pausa, reproduciendoAlbum, listasCircularesAlbumes

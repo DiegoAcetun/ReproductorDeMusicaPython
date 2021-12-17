@@ -72,7 +72,46 @@
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/cisne.mp3"</ruta>
     </cancion>
-
-
-
+    <cancion nombre="Beat">
+        <artista> "artista4" </artista>
+        <album> "album10"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/Beat.mp3"</ruta>
+    </cancion>
+    <cancion nombre="beatmos">
+        <artista> "artista4" </artista>
+        <album> "album10"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/beatmos.mp3"</ruta>
+    </cancion>
+    <cancion nombre="beggin">
+        <artista> "artista4" </artista>
+        <album> "album11"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/beggin.mp3"</ruta>
+    </cancion>
+    <cancion nombre="dt">
+        <artista> "artista4" </artista>
+        <album> "album11"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/dt.mp3"</ruta>
+    </cancion>
+    <cancion nombre="iins">
+        <artista> "artista5" </artista>
+        <album> "album12"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/iins.mp3"</ruta>
+    </cancion>
+    <cancion nombre="remake">
+        <artista> "artista5" </artista>
+        <album> "album12"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/remake.mp3"</ruta>
+    </cancion>
+    <cancion nombre="squad">
+        <artista> "artista6" </artista>
+        <album> "album13"</album>
+        <imagen> "../Img/heroes.png"</imagen>
+        <ruta>"../Musica/squad.mp3"</ruta>
+    </cancion>
 </biblioteca>
