@@ -1,13 +1,14 @@
-from ListaCircular import *
-from os import system
-system('clear')
-lista = ListaCircular()
-
-lista.agregarFinal(22)
-lista.agregarFinal(44)
-lista.agregarFinal(25)
-lista.agregarFinal(82)
-lista.agregarFinal(99)
-lista.agregarFinal(4100)
-
-lista.recorrerInicio()
+import threading
+import time
+import datetime
+def a():
+    time.sleep(5)
+    print('hola')
+t1 = threading.Thread(name='hilo1', target=a)
+# t1.start()
+tiempo = 5
+i=0
+while i<=tiempo:
+    print(i)
+    i+=1
+    time.sleep(1)

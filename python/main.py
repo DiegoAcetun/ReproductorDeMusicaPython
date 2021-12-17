@@ -9,10 +9,12 @@ from graphviz import Graph
 from graphviz import Digraph
 import graphviz
 import copy
-
-
+import mutagen
+import threading
+import time
+import datetime
 from pygame import mixer
-from os import system
+from os import path, pathconf, system
 
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
@@ -41,6 +43,41 @@ albumesBox = []
 id = 0
 listasCircularesAlbumes = ListaDoble()
 listaAlbum = ListaCircular()
+# pp=0
+# hilo=True; b=0
+# def a():
+#     global pausa, reproducir, pp, hilo
+#     tiempo = 20
+#     while hilo:
+#         if pp>=tiempo:
+#             hilo=False
+#             break
+#         if pausa==False:
+#             pass
+#         else:
+#             print(pp)
+#             time.sleep(1)       
+#             pp+=1
+# def h():
+#     global pausa, b, hilo
+#     if b==0:
+#         pass
+#     else:
+#         hilo=False
+
+#     if pausa:
+#         pausa=False
+
+#         return
+#     else:
+#         pausa=True
+#     hilo=True
+#     t = threading.Thread(target=a)        
+#     t.start()
+#     b+=1
+    
+    
+    
 
 def Play():
     global ruta, cancion, pausa, botonPausa, botonReproducir, imgPausa, imgPlay, reproducir, cancionActual
@@ -52,10 +89,16 @@ def Play():
         # print(cancionActual)
         # print(cancionActual.dato.ruta)
         mixer.init()
+        
         cancion = cancionActual.dato.ruta
         
         cancion = cancion.replace('"', '')
-        
+        tiempo = mutagen.File(cancionActual.dato.ruta)
+        log = tiempo.info.length
+        minutos, segundos = divmod(log, 60)
+        minutos,segundos = int(minutos), int(segundos)
+        tt = (minutos*60) + segundos
+        print(tt)
         if reproducir:
             txtLabel = f'Cancion: {cancionActual.dato.nombre} \n Artista: {cancionActual.dato.artista} \n Album: {cancionActual.dato.album}'
             label.config(text=txtLabel)
@@ -130,7 +173,7 @@ def Play():
     else:
         if combo.get()== '':
             msj = 'No se ha seleccionado ninguna lista de reproducción'
-            messagebox.showinfo(message=msj, title="Lista de reproduccion")
+            messagebox.showwarning(message=msj, title="Lista de reproduccion")
             return
         cancionActual = listasCirculares.primero #Aqui estan todas las listas circulares
         listaActual = listasCirculares.primero
@@ -294,8 +337,17 @@ def Anterior():
 
 def Cargar():
     global ruta, cancion, pausa, botonReproducir, botonPausa, imgPausa, listasCirculares
-    ruta = easygui.fileopenbox()  
-    print(ruta)
+    try:
+
+        ruta = easygui.fileopenbox(default='../archivos/')  
+        print(ruta)
+        LeerXml()
+        Albumes()
+        messagebox.showinfo(message='Archivo Cargado', title='Cargar Archivo')
+        
+    except:
+        messagebox.showerror(message='Ocurrió un error al abrir el archivo', title='Cargar Archivo')
+    # print(ruta)
     
     # cancion = '../Musica/Alone.mp3'
 def Pausa(): 
@@ -434,7 +486,7 @@ def Pila():
 
 def LeerXml():
     global ruta, listaAlbumes, listaCanciones, listaArtistas, ventana, var, listaC, listaVar
-    tree = ET.parse("../archivos/1.xml")
+    tree = ET.parse(ruta)
     root = tree.getroot()
     
     for i in range(len(root)): #root.tag es biblioteca
@@ -1058,80 +1110,89 @@ def Grafo():
 def ReporteHtml():
     global listaActual, combo, listasCirculares
     contenido=''
-    listaOrdenada = copy.deepcopy(listasCirculares.primero)
+    if combo.get()=='':
+        msj='No se ha seleccionado ninguna lista de reproducción'
+        messagebox.showwarning(message=msj, title="HTML")
+        return
+    try:
 
-    while listaOrdenada != None:
-        # print('sxsx',listaActual.dato.nombre)
-        if listaOrdenada.dato.nombre == combo.get():
-            # print(listaActual.dato.nombre, 'es igual a ', combo.get())
-            break
-        listaOrdenada = listaOrdenada.siguiente
-    
-    # listaOrdenada = listaActual
-    # listaOrdenada = copy.deepcopy(aux.dato)#Clonamos la lista de reproducción
-    print(listaOrdenada.dato.primero.dato.nombre, listasCirculares.primero.dato.primero.dato.nombre, 'primera cancion')
-    listaOrdenada.dato.Ordenar()
-    print(listasCirculares.primero.dato.primero.dato.nombre, 'primera cancion')
-    # listaActual.dato.Ordenar()
-    titulo = combo.get()
-    titulo = titulo+'.html'
-    # self.textoConsola+='/n'+'REPORTASO'+str(j)            
-    reporte = open(titulo, 'w')
-    
-    title = 'Reporte lista de reporduccion '+ combo.get()
-    celdas = f'''<tr>
-    <th>Cancion</th>
-    <th>Album</th>
-    <th>Artista</th>
-    <th>Numero de veces reproducida</th>
-    </tr>
-    '''
-    
+        listaOrdenada = copy.deepcopy(listasCirculares.primero)
 
+        while listaOrdenada != None:
+            # print('sxsx',listaActual.dato.nombre)
+            if listaOrdenada.dato.nombre == combo.get():
+                # print(listaActual.dato.nombre, 'es igual a ', combo.get())
+                break
+            listaOrdenada = listaOrdenada.siguiente
         
-    aux = listaOrdenada.dato.primero
-    # print(listaActual.dato, 'llll')
-    #tr son filas
-    while aux:
-        # print(aux.dato.nombre, aux.dato.reproducciones)
+        # listaOrdenada = listaActual
+        # listaOrdenada = copy.deepcopy(aux.dato)#Clonamos la lista de reproducción
+        print(listaOrdenada.dato.primero.dato.nombre, listasCirculares.primero.dato.primero.dato.nombre, 'primera cancion')
+        listaOrdenada.dato.Ordenar()
+        print(listasCirculares.primero.dato.primero.dato.nombre, 'primera cancion')
+        # listaActual.dato.Ordenar()
+        titulo = combo.get()
+        titulo = titulo+'.html'
+        # self.textoConsola+='/n'+'REPORTASO'+str(j)            
+        reporte = open(titulo, 'w')
         
-        celdas+=f'''<tr>
-        <td>{aux.dato.nombre}</td>
-        <td>{aux.dato.album}</td>   
-        <td>{aux.dato.artista}</td>   
-        <td>{aux.dato.reproducciones}</td>   
-
+        title = 'Reporte lista de reporduccion '+ combo.get()
+        celdas = f'''<tr>
+        <th>Cancion</th>
+        <th>Album</th>
+        <th>Artista</th>
+        <th>Numero de veces reproducida</th>
         </tr>
         '''
-
-        aux = aux.siguiente
-        if aux == listaOrdenada.dato.primero:
-            break
-    
-    contenido=(f'''<html>
-    <head>
-    <style type="text/css">
-    table, th, td {{
-    border: 1px solid black;
-        border-collapse: collapse;;
-        }}
         
-        </style>
-        <title>REPORTE1</title>
-        <body>
-        <h1 style="text-align: center;"> {title} </h1>
-        <table style="margin: 0 auto; width:75%">
-        {celdas}
-        </table>
-    
-    </body>
-    <head>
-    </html>
-    ''')
-    reporte.write(contenido)
-    reporte.close()
-    msj = 'Reporte HTML generado'
-    messagebox.showinfo(message=msj, title="HTML")
+
+            
+        aux = listaOrdenada.dato.primero
+        # print(listaActual.dato, 'llll')
+        #tr son filas
+        while aux:
+            # print(aux.dato.nombre, aux.dato.reproducciones)
+            
+            celdas+=f'''<tr>
+            <td>{aux.dato.nombre}</td>
+            <td>{aux.dato.album}</td>   
+            <td>{aux.dato.artista}</td>   
+            <td>{aux.dato.reproducciones}</td>   
+
+            </tr>
+            '''
+
+            aux = aux.siguiente
+            if aux == listaOrdenada.dato.primero:
+                break
+        
+        contenido=(f'''<html>
+        <head>
+        <style type="text/css">
+        table, th, td {{
+        border: 1px solid black;
+            border-collapse: collapse;;
+            }}
+            
+            </style>
+            <title>REPORTE1</title>
+            <body>
+            <h1 style="text-align: center;"> {title} </h1>
+            <table style="margin: 0 auto; width:75%">
+            {celdas}
+            </table>
+        
+        </body>
+        <head>
+        </html>
+        ''')
+        reporte.write(contenido)
+        reporte.close()
+        msj = 'Reporte HTML generado'
+        messagebox.showinfo(message=msj, title='HTML')
+    except:
+        msj='Error al generar reporte HTML'
+        messagebox.showerror(message=msj, title='Reporte HTML')
 
     
     
@@ -1235,23 +1296,25 @@ def ReproducirAlbum():
         msj = 'No se ha seleccionado ningun album'
         messagebox.showwarning(message=msj, title="HTML")
         return
-    aux = listaAlbumes.primero
-    albumActual = ListaCircular()
-    while aux!= None:
-        aux2 = aux.dato.primero
-        if aux.dato.album == comboAlbumes.get():
-            while aux2 != None:
+    try:
+        aux = listaAlbumes.primero
+        albumActual = ListaCircular()
+        while aux!= None:
+            aux2 = aux.dato.primero
+            if aux.dato.album == comboAlbumes.get():
+                while aux2 != None:
 
-                print(aux2.dato.nombre)
-                albumActual.agregarFinal(aux2.dato)
-                aux2 = aux2.siguiente
+                    print(aux2.dato.nombre)
+                    albumActual.agregarFinal(aux2.dato)
+                    aux2 = aux2.siguiente
+                
+                reproduciendoAlbum = True
+                break
             
-            reproduciendoAlbum = True
-            break
-        
-        aux = aux.siguiente
-    Play()
-    
+            aux = aux.siguiente
+        Play()
+    except:
+        messagebox.showerror(message='Error al reproducir album', title='Reproducir album')
 
     pass
 def Albumes():
@@ -1371,10 +1434,10 @@ botonReproducirAlbum = tk.Button(ventana, command=ReproducirAlbum, text='Reprodu
 botonReproducirAlbum.pack()
 botonReproducirAlbum.place(x=290, y=200)
 
-LeerXml()
+# LeerXml()
 # Graphviz()
 # funcion()
-Albumes()
+# Albumes()
 ventana.mainloop()
 # opcionCancion = tk.Radiobutton(ventana, text='cancion 1', value=1, variable=var)
 # opcionCancion.pack
