@@ -2,32 +2,108 @@
 <ListasReproducción>
    <Lista nombre="l1">
    <cancion nombre="Heroes Tonight">
-       <artista> "artista1" </artista>
-       <album> "album1" </album>
+       <artista> artista1 </artista>
+       <album> album1 </album>
        <vecesReproducidas> 0 </vecesReproducidas>
-       <imagen> "../Img/heroes.png" </imagen>
-       <ruta> "../Musica/heroes.mp3" </ruta>
-   </cancion>
-   <cancion nombre="alone">
-       <artista> "artista1" </artista>
-       <album> "album1" </album>
-       <vecesReproducidas> 0 </vecesReproducidas>
-       <imagen> "../Img/alone.png" </imagen>
-       <ruta> "../Musica/alone.mp3" </ruta>
+       <imagen> ../Img/heroes.png </imagen>
+       <ruta> ../Musica/heroes.mp3 </ruta>
    </cancion>
    <cancion nombre="faded">
-       <artista> "artista1" </artista>
-       <album> "album1" </album>
+       <artista> artista1 </artista>
+       <album> album1 </album>
        <vecesReproducidas> 0 </vecesReproducidas>
-       <imagen> "../Img/faded.png" </imagen>
-       <ruta> "../Musica/faded.mp3" </ruta>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/faded.mp3 </ruta>
    </cancion>
    <cancion nombre="waka waka">
-       <artista> "artista2" </artista>
-       <album> "album4" </album>
+       <artista> artista2 </artista>
+       <album> album4 </album>
        <vecesReproducidas> 0 </vecesReproducidas>
-       <imagen> "../Img/faded.png" </imagen>
-       <ruta> "../Musica/waka.mp3" </ruta>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/waka.mp3 </ruta>
+   </cancion>
+   <cancion nombre="Believer">
+       <artista> artista3 </artista>
+       <album> album8 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/Believer.mp3 </ruta>
+   </cancion>
+    </Lista>
+   <Lista nombre="aaa">
+   <cancion nombre="faded">
+       <artista> artista1 </artista>
+       <album> album1 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/faded.mp3 </ruta>
+   </cancion>
+   <cancion nombre="waka waka">
+       <artista> artista2 </artista>
+       <album> album4 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/waka.mp3 </ruta>
+   </cancion>
+   <cancion nombre="live it up">
+       <artista> artista2 </artista>
+       <album> album6 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/live.mp3 </ruta>
+   </cancion>
+   <cancion nombre="Believer">
+       <artista> artista3 </artista>
+       <album> album8 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/Believer.mp3 </ruta>
+   </cancion>
+    </Lista>
+   <Lista nombre="ccc">
+   <cancion nombre="lala">
+       <artista> artista2 </artista>
+       <album> album6 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/lala.mp3 </ruta>
+   </cancion>
+   <cancion nombre="saxobeat">
+       <artista> artista3 </artista>
+       <album> album8 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/heroes.png </imagen>
+       <ruta> ../Musica/saxobeat.mp3 </ruta>
+   </cancion>
+   <cancion nombre="Cisne">
+       <artista> artista3 </artista>
+       <album> album9 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/heroes.png </imagen>
+       <ruta> ../Musica/cisne.mp3 </ruta>
+   </cancion>
+    </Lista>
+   <Lista nombre="fff">
+   <cancion nombre="faded">
+       <artista> artista1 </artista>
+       <album> album1 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/faded.png </imagen>
+       <ruta> ../Musica/faded.mp3 </ruta>
+   </cancion>
+   <cancion nombre="restos">
+       <artista> artista3 </artista>
+       <album> album9 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/heroes.png </imagen>
+       <ruta> ../Musica/restos.mp3 </ruta>
+   </cancion>
+   <cancion nombre="Cisne">
+       <artista> artista3 </artista>
+       <album> album9 </album>
+       <vecesReproducidas> 0 </vecesReproducidas>
+       <imagen> ../Img/heroes.png </imagen>
+       <ruta> ../Musica/cisne.mp3 </ruta>
    </cancion>
     </Lista>
 </ListasReproducción>
