@@ -2,49 +2,49 @@
 <biblioteca>
     <cancion nombre="Heroes Tonight">
         <artista>"artista1" </artista>
-        <album>"album1"</album>
+        <album> "album1"</album>
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/heroes.mp3"</ruta>
     </cancion>
     <cancion nombre="alone">
         <artista>"artista1"</artista>
-        <album> "album1"</album>,
+        <album> </album>
         <imagen> "../Img/alone.png"</imagen>
         <ruta>"../Musica/alone.mp3"</ruta>
     </cancion>
-    <cancion nombre="faded">,
+    <cancion nombre="faded">
         <artista>"artista1"</artista>
         <album> "album1"</album>,
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
-    <cancion nombre="waka waka">,
+    <cancion nombre="waka waka">
         <artista>"artista2"</artista>
-        <album> "album4"</album>,
+        <album> "album4"</album>
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/waka.mp3"</ruta>
     </cancion>
-    <cancion nombre="Lean on">,
+    <cancion nombre="Lean on">
         <artista>"artista2"</artista>
-        <album> "album4"</album>,
+        <album> "album4"</album>
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/Lean.mp3"</ruta>
     </cancion>
-    <cancion nombre="lala">,
+    <cancion nombre="lala">
         <artista>"artista2"</artista>
-        <album> "album6"</album>,
+        <album> "album6"</album>
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/lala.mp3"</ruta>
     </cancion>
-    <cancion nombre="live it up">,
+    <cancion nombre="live it up">
         <artista>"artista2" </artista>
-        <album> "album6"</album>,
+        <album> "album6"</album>
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/live.mp3"</ruta>
     </cancion>
-    <cancion nombre="Believer">,
+    <cancion nombre="Believer">
         <artista>"artista3"</artista>
-        <album> "album8"</album>,
+        <album> "album8"</album>
         <imagen> "../Img/faded.png"</imagen>
         <ruta>"../Musica/Believer.mp3"</ruta>
     </cancion>

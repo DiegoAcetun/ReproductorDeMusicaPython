@@ -1,0 +1,6 @@
+digraph Grafo2 {
+	0 [label="waka waka"]
+	1 [label="Lean on"]
+	0 -> 1 [constraint=false dir=both]
+	0 -> 1 [constraint=false dir=both]
+}

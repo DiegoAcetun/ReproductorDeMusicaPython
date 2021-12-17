@@ -15,7 +15,7 @@ import time
 import datetime
 from pygame import mixer
 from os import system
-
+import traceback
 system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
@@ -363,6 +363,9 @@ def Cargar():
         
     except:
         messagebox.showerror(message='Ocurrió un error al abrir el archivo', title='Cargar Archivo')
+        # traceback.print_exc()
+        
+    
     # print(ruta)
     
     # cancion = '../Musica/Alone.mp3'
@@ -755,6 +758,11 @@ def AnidarListas():
     #Recorriendo la lista de canciones
     while aux != None:
         if listaAlbumes.vacia():
+            # if aux.dato.album == 'single':
+            #     aux=aux.siguiente
+
+            #     print('a')
+            #     continue
             listaAlbumAux = ListaDobleAlbum()
             listaAlbumAux.agregarFinal(aux.dato)
             listaAlbumAux.artista = aux.dato.artista
@@ -769,6 +777,11 @@ def AnidarListas():
             aux2 = listaAlbumes.primero
 
         else:
+            # if aux.dato.album == 'single':
+            #     aux=aux.siguiente
+
+            #     print('iii')
+            #     continue
             albumEncontrado = False
             # print(aux.dato.album, aux.dato.artista)
             aux3 = listaAlbumes.primero
@@ -915,6 +928,9 @@ def AnidarListas():
         aux = aux.siguiente
     print(listaArtistas.primero.dato.size)
     # print('size', listaAlbumes.size)
+
+    #Nuevo codigo
+    
 # def Graphviz():
 #     global id, listaArtistas, listaAlbumes, listaCanciones
 #     # g = Digraph('ejemplo', format='png')
@@ -1149,9 +1165,59 @@ def Grafo():
                 
             pass
         g.view()
+        id=0
+        g2 = Digraph('Grafo2', format='png')
+        aux = listasCirculares.primero
+        # print(aux.dato)
+        aux = aux.dato.primero
+        g2.node(str(id), aux.dato.nombre)
+        id1=id
+        idPrimero=id
+        id+=1
+        while aux:
+            # print(aux.dato.nombre)
+            aux=aux.siguiente
+            
+            if aux==listasCirculares.primero.dato.primero:
+                break
+            g2.node(str(id),aux.dato.nombre)
+            g2.edge(str(id1), str(id), constraint='false', dir='both')
+            id1=id
+            id+=1
+        g2.edge(str(idPrimero), str(id1), constraint='false', dir='both')
+        g2.view()
+
+        id=0
+        g3 = Digraph('Grafo3', format='png')
+        aux = listaAlbumes.primero
+        print(aux.dato,'ooo')
+        aux = aux.dato.primero
+        g3.node(str(id), aux.dato.nombre)
+        id1=id
+        idPrimero=id
+        id+=1
+        while aux:
+            print(aux.dato.nombre)
+            aux=aux.siguiente
+            
+            if aux!=None:
+                g3.node(str(id),aux.dato.nombre)
+                g3.edge(str(id1), str(id), constraint='false', dir='both')
+                id1=id
+                id+=1
+        g3.edge(str(idPrimero), str(id1), constraint='false', dir='both')
+        g3.view()
+
+        
+
     except:
         messagebox.showerror(message='Error al generar el grafo', title='Grafo')
     pass
+def g():
+    global listasCirculares, id, listasCircularesAlbumes, listaAlbumes
+    
+
+    # print(aux.dato.nombre)
 def ReporteHtml():
     global listaActual, combo, listasCirculares
     contenido=''
@@ -1359,7 +1425,7 @@ def ReproducirAlbum():
             if aux.dato.album == comboAlbumes.get():
                 while aux2 != None:
 
-                    print(aux2.dato.nombre)
+                    # print(aux2.dato.nombre)
                     albumActual.agregarFinal(aux2.dato)
                     aux2 = aux2.siguiente
                 
@@ -1437,8 +1503,8 @@ label.pack()
 label.place(x=820, y=270, width=600, height=500)
 label.configure(justify="left")
 
-imgCancion = PhotoImage(file='../Img/alone.png')
-labelImgCancion = tk.Label(ventana, image=imgCancion)
+imgCancion = PhotoImage(file='../Img/blanco.png')
+labelImgCancion = tk.Label(ventana, image=imgCancion, width=300, height=300)
 labelImgCancion.pack()
 labelImgCancion.place(x=500, y=350)
 
