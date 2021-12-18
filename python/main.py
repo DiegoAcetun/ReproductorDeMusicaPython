@@ -1097,80 +1097,81 @@ def Grafo():
     # print('lisA', listaArtistas.size)
     try:
 
-        g = Digraph('Grafo', format='png')
-        g.node(str(id), aux.dato.artista)
-        idPrimerArtista=id
-        idArtistaIzquierda=id
-        listaIdArtista.agregarFinal(id)
-        id+=1
-        #conectamos los artistas
-        while aux != None:
-            aux = aux.siguiente
-            if aux!=None:
-                g.node(str(id), aux.dato.artista)
-                g.edge(str(idArtistaIzquierda), str(id), constraint='false', dir='both')
-                idArtistaIzquierda=id
-                listaIdArtista.agregarFinal(id)
+        # g = Digraph('Grafo', format='png')
+        # g.node(str(id), aux.dato.artista)
+        # idPrimerArtista=id
+        # idArtistaIzquierda=id
+        # listaIdArtista.agregarFinal(id)
+        # id+=1
+        # #conectamos los artistas
+        # while aux != None:
+        #     aux = aux.siguiente
+        #     if aux!=None:
+        #         g.node(str(id), aux.dato.artista)
+        #         g.edge(str(idArtistaIzquierda), str(id), constraint='false', dir='both')
+        #         idArtistaIzquierda=id
+        #         listaIdArtista.agregarFinal(id)
 
-                id+=1
-            # print(id)
+        #         id+=1
+        #     # print(id)
 
 
-        #Conectamos albumes
-        idAlbumIzquierda=id
-        aux = listaArtistas.primero
-        c=0
-        auxIdArtista=listaIdArtista.primero; bandera=False
-        while aux!=None:
-            #Recorro los albumes de los artistas
-            aux2=aux.dato.primero
-            bandera=False
-            while aux2!= None:
-                # print(auxIdArtista.dato)
-                # print(aux2.dato.album)
-                g.node(str(id), aux2.dato.album)
-                g.edge(str(auxIdArtista.dato), str(id), dir='both')
-                aux2=aux2.siguiente
-                if bandera:
-                    g.edge(str(idAlbumIzquierda), str(id), constraint='false', dir='both')
-                idAlbumIzquierda=id
-                listaIdAlbumes.agregarFinal(id)
-                id+=1
+        # #Conectamos albumes
+        # idAlbumIzquierda=id
+        # aux = listaArtistas.primero
+        # c=0
+        # auxIdArtista=listaIdArtista.primero; bandera=False
+        # while aux!=None:
+        #     #Recorro los albumes de los artistas
+        #     aux2=aux.dato.primero
+        #     bandera=False
+        #     while aux2!= None:
+        #         # print(auxIdArtista.dato)
+        #         # print(aux2.dato.album)
+        #         g.node(str(id), aux2.dato.album)
+        #         g.edge(str(auxIdArtista.dato), str(id), dir='both')
+        #         aux2=aux2.siguiente
+        #         if bandera:
+        #             g.edge(str(idAlbumIzquierda), str(id), constraint='false', dir='both')
+        #         idAlbumIzquierda=id
+        #         listaIdAlbumes.agregarFinal(id)
+        #         id+=1
                     
-                bandera=True
-            aux=aux.siguiente
-            auxIdArtista=auxIdArtista.siguiente
+        #         bandera=True
+        #     aux=aux.siguiente
+        #     auxIdArtista=auxIdArtista.siguiente
             
-        aux = listaAlbumes.primero
-        auxIdAlbumes=listaIdAlbumes.primero
-        idCancionIzquierda=id
-        bandera = False
-        # print(listaAlbumes.size, 'size es estre')
-        while aux!= None:
-            aux2= aux.dato.primero
-            # print('*'*25)
-            # print('album', aux.dato.album)
-            bandera=False
-            while aux2 !=None:
-                g.node(str(id), aux2.dato.nombre)
-                g.edge(str(auxIdAlbumes.dato), str(id), dir='both')
-                # print(aux2.dato.nombre)
-                if bandera:
-                    # print(idCancionIzquierda, id)
-                    g.edge(str(idCancionIzquierda), str(id), constraint='false', dir='both')
-                    pass
-                idCancionIzquierda=id
-                id+=1
-                bandera=True
-                aux2=aux2.siguiente
-            aux=aux.siguiente
+        # aux = listaAlbumes.primero
+        # auxIdAlbumes=listaIdAlbumes.primero
+        # idCancionIzquierda=id
+        # bandera = False
+        # # print(listaAlbumes.size, 'size es estre')
+        # while aux!= None:
+        #     aux2= aux.dato.primero
+        #     # print('*'*25)
+        #     # print('album', aux.dato.album)
+        #     bandera=False
+        #     while aux2 !=None:
+        #         g.node(str(id), aux2.dato.nombre)
+        #         g.edge(str(auxIdAlbumes.dato), str(id), dir='both')
+        #         # print(aux2.dato.nombre)
+        #         if bandera:
+        #             # print(idCancionIzquierda, id)
+        #             g.edge(str(idCancionIzquierda), str(id), constraint='false', dir='both')
+        #             pass
+        #         idCancionIzquierda=id
+        #         id+=1
+        #         bandera=True
+        #         aux2=aux2.siguiente
+        #     aux=aux.siguiente
             
-            auxIdAlbumes=auxIdAlbumes.siguiente
+        #     auxIdAlbumes=auxIdAlbumes.siguiente
                 
-            pass
-        g.view()
+        #     pass
+        # g.view()
+        grf()
         id=0
-        g2 = Digraph('Grafo2', format='png')
+        g2 = Digraph('GrafoListaReproduccion', format='png')
         aux = listasCirculares.primero
         # print(aux.dato)
         aux = aux.dato.primero
@@ -1192,9 +1193,9 @@ def Grafo():
         g2.view()
 
         id=0
-        g3 = Digraph('Grafo3', format='png')
+        g3 = Digraph('GrafoAlbum', format='png')
         aux = listaAlbumes.primero
-        print(aux.dato,'ooo')
+        # print(aux.dato,'ooo')
         aux = aux.dato.primero
         g3.node(str(id), aux.dato.nombre)
         id1=id
@@ -1368,69 +1369,73 @@ def grf():
     listaIdArtistas=ListaDoble()
     listaIdAlbumes=ListaDoble()
     id=0
-    aux = ListaArtistas2.primero
-    g = Digraph('gr', format='png')
-    g.node(str(id), aux.dato.artista)
-    idArtista1=id
-    listaIdArtistas.agregarFinal(id)
-    id+=1
-    while aux!= None:
-        aux=aux.siguiente
-        if aux!= None:
-            g.node(str(id), aux.dato.artista)
-            g.edge(str(idArtista1), str(id), constraint='false')
-            idArtista1=id
-            listaIdArtistas.agregarFinal(id)
-            id+=1
-    auxArtista = listaIdArtistas.primero        
-    aux = ListaArtistas2.primero
-    while aux!= None:
-        aux2=aux.dato.primero
-        g.node(str(id), aux2.dato.album)
-        listaIdAlbumes.agregarFinal(id)
-        g.edge(str(auxArtista.dato), str(id))
-        IdAlbum1 = id
+    try:
+
+        aux = ListaArtistas2.primero
+        g = Digraph('grafo', format='png')
+        g.node(str(id), aux.dato.artista)
+        idArtista1=id
+        listaIdArtistas.agregarFinal(id)
         id+=1
-    #Aqui se unen los albumes
-        while aux2!= None:
-            aux2 = aux2.siguiente
-            if aux2!= None:
-                g.node(str(id), aux2.dato.album)
-                g.edge(str(IdAlbum1), str(id), constraint='false')
-                g.edge(str(auxArtista.dato), str(id))
-                listaIdAlbumes.agregarFinal(id)         
-                IdAlbum1=id
+        while aux!= None:
+            aux=aux.siguiente
+            if aux!= None:
+                g.node(str(id), aux.dato.artista)
+                g.edge(str(idArtista1), str(id), constraint='false')
+                idArtista1=id
+                listaIdArtistas.agregarFinal(id)
                 id+=1
-                pass
-        auxArtista=auxArtista.siguiente       
-        aux = aux.siguiente
-    #Ahora solo recorro las listas de artistas
-    aux=ListaArtistas2.primero
-    auxAlbum=listaIdAlbumes.primero
-
-    while aux!= None:
-        aux2=aux.dato.primero
-        while aux2!=None:
-            aux3 = aux2.dato.primero
-            g.node(str(id), aux3.dato.dato.nombre)
-            g.edge(str(auxAlbum.dato), str(id))
-            idCancion1=id
+        auxArtista = listaIdArtistas.primero        
+        aux = ListaArtistas2.primero
+        while aux!= None:
+            aux2=aux.dato.primero
+            g.node(str(id), aux2.dato.album)
+            listaIdAlbumes.agregarFinal(id)
+            g.edge(str(auxArtista.dato), str(id))
+            IdAlbum1 = id
             id+=1
-            while aux3!= None:
-                aux3 = aux3.siguiente
-                if aux3!= None:
-                    g.node(str(id), aux3.dato.dato.nombre)
-                    g.edge(str(idCancion1), str(id), constraint='false')
-                    g.edge(str(auxAlbum.dato), str(id))
-                    idCancion1=id
+        #Aqui se unen los albumes
+            while aux2!= None:
+                aux2 = aux2.siguiente
+                if aux2!= None:
+                    g.node(str(id), aux2.dato.album)
+                    g.edge(str(IdAlbum1), str(id), constraint='false')
+                    g.edge(str(auxArtista.dato), str(id))
+                    listaIdAlbumes.agregarFinal(id)         
+                    IdAlbum1=id
                     id+=1
-
                     pass
-            aux2=aux2.siguiente
-            auxAlbum=auxAlbum.siguiente
+            auxArtista=auxArtista.siguiente       
+            aux = aux.siguiente
+        #Ahora solo recorro las listas de artistas
+        aux=ListaArtistas2.primero
+        auxAlbum=listaIdAlbumes.primero
 
-        aux=aux.siguiente
-    g.view()
+        while aux!= None:
+            aux2=aux.dato.primero
+            while aux2!=None:
+                aux3 = aux2.dato.primero
+                g.node(str(id), aux3.dato.dato.nombre)
+                g.edge(str(auxAlbum.dato), str(id))
+                idCancion1=id
+                id+=1
+                while aux3!= None:
+                    aux3 = aux3.siguiente
+                    if aux3!= None:
+                        g.node(str(id), aux3.dato.dato.nombre)
+                        g.edge(str(idCancion1), str(id), constraint='false')
+                        g.edge(str(auxAlbum.dato), str(id))
+                        idCancion1=id
+                        id+=1
+
+                        pass
+                aux2=aux2.siguiente
+                auxAlbum=auxAlbum.siguiente
+
+            aux=aux.siguiente
+        g.view()
+    except:
+        messagebox.showerror('Error al generar el grafo de albumes listas y canciones')
     # while aux!= None:
     #     aux = aux.siguiente
     #     if aux!= None:
@@ -1700,7 +1705,7 @@ botonRHtml = tk.Button(ventana, text="Reporte HTML", command=ReporteHtml, height
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
-botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=grf, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Grafo, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRGraphviz.pack()
 botonRGraphviz.place(x=475, y=10)
 

@@ -1,0 +1,14 @@
+digraph GrafoListaReproduccion {
+	0 [label="waka waka"]
+	1 [label=lala]
+	0 -> 1 [constraint=false dir=both]
+	2 [label="scream and shout"]
+	1 -> 2 [constraint=false dir=both]
+	3 [label=Cisne]
+	2 -> 3 [constraint=false dir=both]
+	4 [label=beatmos]
+	3 -> 4 [constraint=false dir=both]
+	5 [label=iins]
+	4 -> 5 [constraint=false dir=both]
+	0 -> 5 [constraint=false dir=both]
+}

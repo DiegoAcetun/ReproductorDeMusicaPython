@@ -1,6 +1,0 @@
-digraph Grafo3 {
-	0 [label="Heroes Tonight"]
-	1 [label=faded]
-	0 -> 1 [constraint=false dir=both]
-	0 -> 1 [constraint=false dir=both]
-}

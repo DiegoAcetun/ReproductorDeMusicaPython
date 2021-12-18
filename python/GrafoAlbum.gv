@@ -1,6 +1,6 @@
-digraph Grafo2 {
-	0 [label="waka waka"]
-	1 [label="Lean on"]
+digraph GrafoAlbum {
+	0 [label="Heroes Tonight"]
+	1 [label=faded]
 	0 -> 1 [constraint=false dir=both]
 	0 -> 1 [constraint=false dir=both]
 }

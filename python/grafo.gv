@@ -1,4 +1,4 @@
-digraph gr {
+digraph grafo {
 	0 [label=artista1]
 	1 [label=artista2]
 	0 -> 1 [constraint=false]
