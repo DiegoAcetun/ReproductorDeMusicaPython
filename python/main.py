@@ -43,6 +43,9 @@ albumesBox = []
 id = 0
 listasCircularesAlbumes = ListaDoble()
 listaAlbum = ListaCircular()
+ListaArtistas2=ListaDobleArtista()
+ListaAlbumes2=ListaDobleAlbum()
+
 # pp=0
 # hilo=True; b=0
 # def a():
@@ -363,7 +366,7 @@ def Cargar():
         
     except:
         messagebox.showerror(message='Ocurrió un error al abrir el archivo', title='Cargar Archivo')
-        # traceback.print_exc()
+        traceback.print_exc()
         
     
     # print(ruta)
@@ -551,7 +554,8 @@ def LeerXml():
             listaCanciones.agregarFinal(nuevaCancion)
     except:
         messagebox.showerror(message='Error al leer xml', title='Lectura xml')
-    AnidarListas()
+    # AnidarListas()
+    conectarListas()
     CrearCheckbox()
     # aux = listaCanciones.primero #Esta es la primera lista aux cancion
     # #Recorriendo la lista de canciones
@@ -1213,11 +1217,237 @@ def Grafo():
     except:
         messagebox.showerror(message='Error al generar el grafo', title='Grafo')
     pass
-def g():
-    global listasCirculares, id, listasCircularesAlbumes, listaAlbumes
-    
+def conectarListas():
+    global ListaAlbumes2, listaCanciones, ListaArtistas2, listaAlbumes
+    aux = listaCanciones.primero #Esta es la primera lista aux cancion
+    #Recorriendo la lista de canciones
+    while aux != None:
+        if listaAlbumes.vacia():
+            # if aux.dato.album == 'single':
+            #     aux=aux.siguiente
 
-    # print(aux.dato.nombre)
+            #     print('a')
+            #     continue
+            listaAlbumAux = ListaDobleAlbum()
+            listaAlbumAux.agregarFinal(aux.dato)
+            listaAlbumAux.artista = aux.dato.artista
+            listaAlbumAux.album = aux.dato.album
+            # print(aux.dato.album, aux.dato.artista)
+            
+            listaAlbumes.agregarFinal(listaAlbumAux)
+
+            # print(aux.dato.nombre)
+            #seguir creando las listas album cuando ya hay elementos,
+            #recorrer la lista 
+            aux2 = listaAlbumes.primero
+
+        else:
+            # if aux.dato.album == 'single':
+            #     aux=aux.siguiente
+
+            #     print('iii')
+            #     continue
+            albumEncontrado = False
+            # print(aux.dato.album, aux.dato.artista)
+            aux3 = listaAlbumes.primero
+            while aux3 != None:
+                # print(aux3.dato)
+                aux4=aux3.dato #aux4 tiene la lista album aux
+                # print(aux4.primero.dato.nombre) # Esto es el objeto cancion
+                # print(aux4.album)
+                aux3 = aux3.siguiente
+                # print('a'+aux4.album+'a'+' a'+aux.dato.album+'a')
+                if aux4.album == aux.dato.album: #Recorremos para ver si el album ya existe
+                    aux4.agregarFinal(aux.dato) #Le agregamos la cancion a ese album
+                    albumEncontrado = True
+                    
+                    # print(aux4.album, 'no se crea')
+
+                    break
+            
+            if albumEncontrado:
+                pass
+            else:
+                listaAlbumAux = ListaDobleAlbum()
+                listaAlbumAux.agregarFinal(aux.dato)
+                listaAlbumAux.artista = aux.dato.artista
+                listaAlbumAux.album = aux.dato.album
+                # print(listaAlbumAux.primero.dato.nombre) Con esto se accede a los atributos de la lista
+                #de canciones desde la lista aux album
+                listaAlbumes.agregarFinal(listaAlbumAux)
+
+                # print(aux.dato.nombre)
+
+
+
+        #print(aux.dato.ruta)#asi se accede a los atrubutos desde el auxiliar
+        aux=aux.siguiente
+
+    '''aqui se conectan las listas'''   
+    aux=listaCanciones.primero
+    #Recorremos las canciones cargadas
+    while aux!=None:
+        #Primero creamos los artristas
+        if ListaArtistas2.vacia():
+            # print('vacia')
+            listaAuxArtista=ListaDobleArtista()
+            listaAuxAlbum=ListaDobleAlbum()
+            listaAuxArtista.artista=aux.dato.artista
+            # print(aux.dato.artista, 'agregado')
+            listaAuxAlbum.artista=aux.dato.artista
+            listaAuxAlbum.album=aux.dato.album
+            listaAuxAlbum.agregarFinal(aux)
+            listaAuxArtista.agregarFinal(listaAuxAlbum)
+            # print(listaAuxArtista.primero, 'ss')
+            ListaArtistas2.agregarFinal(listaAuxArtista)
+        else:
+            #primero ver si el artista ya existe
+            artistaEncontrado=False
+            aux2=ListaArtistas2.primero
+            while aux2!=None:
+                if aux.dato.artista == aux2.dato.artista:
+                    aux3=aux2.dato.primero
+                    #aqui recorro la lista de albumes del artista
+                    albumEncontrado=False
+                    while aux3!= None:
+                        if aux3.dato.album == aux.dato.album:
+
+                            albumEncontrado=True
+                            break
+                        aux3=aux3.siguiente
+                    if albumEncontrado:
+                        aux3.dato.agregarFinal(aux)
+                    else:
+                        listaAuxAlbum=ListaDobleAlbum()
+                        # print(aux.dato.artista, 'agregado')
+                        listaAuxAlbum.artista=aux.dato.artista
+                        listaAuxAlbum.album=aux.dato.album
+                        listaAuxAlbum.agregarFinal(aux)
+                        aux2.dato.agregarFinal(listaAuxAlbum)
+                        # print(listaAuxArtista.primero, 'ss')
+                        
+                        # print(aux3.dato)
+                    artistaEncontrado=True
+                    break
+                aux2=aux2.siguiente
+            '''si el artista ya esta creado pasamos a la siguiente iteracion'''
+            if artistaEncontrado:
+                pass
+            else:
+                listaAuxArtista=ListaDobleArtista()
+                listaAuxAlbum=ListaDobleAlbum()
+                listaAuxArtista.artista=aux.dato.artista
+                # print(aux.dato.artista, 'agregado')
+                listaAuxAlbum.artista=aux.dato.artista
+                listaAuxAlbum.album=aux.dato.album
+                listaAuxAlbum.agregarFinal(aux)
+                listaAuxArtista.agregarFinal(listaAuxAlbum)
+                # print(listaAuxArtista.primero, 'ss')  
+                ListaArtistas2.agregarFinal(listaAuxArtista)
+
+        aux = aux.siguiente
+    #Obteniendo datos
+    aux = ListaArtistas2.primero
+    while aux!= None:
+        print('*'*25)
+        print('artista', aux.dato.artista)
+        aux2=aux.dato.primero
+        '''Aqui se recorren los albumes del artista'''
+        while aux2!= None:
+            print('album', aux2.dato.album)
+            aux3=aux2.dato.primero
+            print('CANCIONES')
+            while aux3!= None:
+                print(aux3.dato.dato.nombre)
+                aux3 = aux3.siguiente
+            aux2=aux2.siguiente
+        aux = aux.siguiente
+
+def grf():
+    global id, ListaArtistas2
+    listaIdArtistas=ListaDoble()
+    listaIdAlbumes=ListaDoble()
+    id=0
+    aux = ListaArtistas2.primero
+    g = Digraph('gr', format='png')
+    g.node(str(id), aux.dato.artista)
+    idArtista1=id
+    listaIdArtistas.agregarFinal(id)
+    id+=1
+    while aux!= None:
+        aux=aux.siguiente
+        if aux!= None:
+            g.node(str(id), aux.dato.artista)
+            g.edge(str(idArtista1), str(id), constraint='false')
+            idArtista1=id
+            listaIdArtistas.agregarFinal(id)
+            id+=1
+    auxArtista = listaIdArtistas.primero        
+    aux = ListaArtistas2.primero
+    while aux!= None:
+        aux2=aux.dato.primero
+        g.node(str(id), aux2.dato.album)
+        listaIdAlbumes.agregarFinal(id)
+        g.edge(str(auxArtista.dato), str(id))
+        IdAlbum1 = id
+        id+=1
+    #Aqui se unen los albumes
+        while aux2!= None:
+            aux2 = aux2.siguiente
+            if aux2!= None:
+                g.node(str(id), aux2.dato.album)
+                g.edge(str(IdAlbum1), str(id), constraint='false')
+                g.edge(str(auxArtista.dato), str(id))
+                listaIdAlbumes.agregarFinal(id)         
+                IdAlbum1=id
+                id+=1
+                pass
+        auxArtista=auxArtista.siguiente       
+        aux = aux.siguiente
+    #Ahora solo recorro las listas de artistas
+    aux=ListaArtistas2.primero
+    auxAlbum=listaIdAlbumes.primero
+
+    while aux!= None:
+        aux2=aux.dato.primero
+        while aux2!=None:
+            aux3 = aux2.dato.primero
+            g.node(str(id), aux3.dato.dato.nombre)
+            g.edge(str(auxAlbum.dato), str(id))
+            idCancion1=id
+            id+=1
+            while aux3!= None:
+                aux3 = aux3.siguiente
+                if aux3!= None:
+                    g.node(str(id), aux3.dato.dato.nombre)
+                    g.edge(str(idCancion1), str(id), constraint='false')
+                    g.edge(str(auxAlbum.dato), str(id))
+                    idCancion1=id
+                    id+=1
+
+                    pass
+            aux2=aux2.siguiente
+            auxAlbum=auxAlbum.siguiente
+
+        aux=aux.siguiente
+    g.view()
+    # while aux!= None:
+    #     aux = aux.siguiente
+    #     if aux!= None:
+    #         g.node(str(id), aux.dato)
+    #         print('*'*25)
+    #         print('artista', aux.dato.artista)        
+    #         aux2=aux.dato.primero
+    #         '''Aqui se recorren los albumes del artista'''
+    #         while aux2!= None:
+    #             print('album', aux2.dato.album)
+    #             aux3=aux2.dato.primero
+    #             print('CANCIONES')
+    #             while aux3!= None:
+    #                 print(aux3.dato.dato.nombre)
+    #                 aux3 = aux3.siguiente
+    #             aux2=aux2.siguiente
+    
 def ReporteHtml():
     global listaActual, combo, listasCirculares
     contenido=''
@@ -1470,7 +1700,7 @@ botonRHtml = tk.Button(ventana, text="Reporte HTML", command=ReporteHtml, height
 botonRHtml.pack()
 botonRHtml.place(x=250, y=10)
 
-botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=Grafo, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
+botonRGraphviz = tk.Button(ventana, text="Reporte Graphviz", command=grf, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
 botonRGraphviz.pack()
 botonRGraphviz.place(x=475, y=10)
 

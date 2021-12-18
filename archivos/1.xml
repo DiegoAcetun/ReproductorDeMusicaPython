@@ -62,7 +62,7 @@
     </cancion>
     <cancion nombre="restos">
         <artista>"artista3" </artista>
-        <album> "album9"</album>
+        <album> </album>
         <imagen> "../Img/heroes.png"</imagen>
         <ruta>"../Musica/restos.mp3"</ruta>
     </cancion>
