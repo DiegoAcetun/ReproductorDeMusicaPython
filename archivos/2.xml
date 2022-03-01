@@ -17,7 +17,7 @@
         <artista>"artista38"</artista>
         <album> "album8"</album>,
         <imagen> "../Img/faded.png"</imagen>
-        <ruta>"../Musica/Believer.mp3"</ruta>
+        <ruta>"../Musica/faded.mp3"</ruta>
     </cancion>
     
 </biblioteca>

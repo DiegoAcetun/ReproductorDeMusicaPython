@@ -9,14 +9,14 @@ from graphviz import Graph
 from graphviz import Digraph
 import graphviz
 import copy
-import mutagen
+# import mutagen
 import threading
 import time
 import datetime
 from pygame import mixer
 from os import system
 import traceback
-system('clear')
+# system('clear')
 ruta = ''; cancion = ''; pausa = False; botonReproducir = None; botonPausa = None; imgPausa = None; imgPlay = None
 reproducir = True; botonNext = None; txtLabel = 'Cancion: \n Artista: \n Album:' ; text = None; label= None
 Aleatorio = None; pila = []; pilaNombre = []; eliminado = None; bandera = False; posicionPila=0
@@ -1693,8 +1693,11 @@ var = tk.StringVar()
 fuente = tkFont.Font(family="Arial", size=15)
 fuenteLabel = tkFont.Font(family="Arial", size=35)
 
+ancho_ventana = 1500
+alto_ventana = 850
 ventana.geometry('1500x1000+170+10')
-ventana.title('Manejo Grid')
+
+ventana.title('Reproductor MP3')
 ventana.configure(bg='white')
 
 botonCargar = tk.Button(ventana, text="Seleccionar Archivo", command=Cargar, height=2, width=15, bg="midnightblue", fg="white", activebackground="powderblue", font=fuente)
