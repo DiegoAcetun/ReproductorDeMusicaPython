@@ -1,4 +1,4 @@
-# **REPRODUCTOR DE MUSICA MP3**
+# **REPRODUCTOR DE MUSICA MP3 PROYECTO1 IPC2**
 El reproductor fue desarrollado con el fin de implementar estructuras de datos, usando listas simplemente enlazadas y listas circulares.
 ___
 Al iniciar la aplicación se ve de la siguiente forma:
